@@ -1,0 +1,50 @@
+@use "sass:map";
+@forward 'element-plus/theme-chalk/src/common/var.scss' with (
+  $colors: (
+    'white': #ffffff,
+    'black': #000000,
+    'primary': (
+      'base': #40e2ff,
+    ),
+    'success': (
+      'base': #67c23a,
+    ),
+    'warning': (
+      'base': #e6a23c,
+    ),
+    'danger': (
+      'base': #f56c6c,
+    ),
+    'error': (
+      'base': #f56c6c,
+    ),
+    'info': (
+      'base': #909399,
+    ),
+  ),
+
+  $border-radius: (
+    'small': 2px,
+    'round': 10px,
+  ),
+  // menu
+  // header
+  $header: (
+    'padding': 0 0px,
+    'height': 50px,
+  ),
+  // main
+  $main: (
+    'padding': 10px
+  ),
+  // button
+  $button-padding-vertical: (
+    'small': 6px,
+  ),
+  $button-padding-horizontal: (
+    'small': 10px,
+  ),
+  $button-border-radius: (
+    'small': 2px,
+  )
+);
