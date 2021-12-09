@@ -1,14 +1,14 @@
 <script setup lang="ts">
-import Header from '../header/Header.vue';
+import BaseHeader from '../baseHeader/BaseHeader.vue';
 </script>
 
 <template>
   <el-container direction="vertical">
-    <Header></Header>
+    <BaseHeader></BaseHeader>
     <el-main>
       <router-view></router-view>
     </el-main>
   </el-container>
 </template>
 
-<style lang="scss" scoped src="./Container.scss"></style>
+<style lang="scss" scoped src="./BaseContainer.scss"></style>

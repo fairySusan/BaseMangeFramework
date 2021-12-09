@@ -1,9 +1,10 @@
 import { TokenHandler } from '@/mixins/TokenUtil';
 import { ElMessage } from 'element-plus';
-import { createRouter, createWebHashHistory, createWebHistory, RouteRecordRaw, Router, RouteLocationNormalized } from 'vue-router';
+import { createRouter, createWebHashHistory, RouteRecordRaw, RouteLocationNormalized } from 'vue-router';
+import {settingRouters} from './setting'
 const Login = () => import('@/views/login/Login.vue')
-const RightPanel = () => import('@/componentsui/rightPanel/RightPanel.vue')
-const Container = () => import('@/componentsui/container/Container.vue')
+const BaseRightPanel = () => import('@/componentsui/baseRightPanel/BaseRightPanel.vue')
+const BaseContainer = () => import('@/componentsui/baseContainer/BaseContainer.vue')
 const Home = () => import('@/views/home/Home.vue')
 const routes: Array<RouteRecordRaw> = [
   {
@@ -13,7 +14,7 @@ const routes: Array<RouteRecordRaw> = [
     meta: {
       name: '容器'
     },
-    component: RightPanel,
+    component: BaseRightPanel,
     children: [
       {
         path: '/container',
@@ -21,7 +22,7 @@ const routes: Array<RouteRecordRaw> = [
         meta: {
           name: '首页'
         },
-        component: Container,
+        component: BaseContainer,
         children: [
           {
             path: '/home',
@@ -30,7 +31,8 @@ const routes: Array<RouteRecordRaw> = [
               name: '首页'
             },
             component: Home
-          }
+          },
+          ...settingRouters
         ]
       }
     ]

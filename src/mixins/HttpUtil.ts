@@ -7,7 +7,10 @@ let requestFunctionQueue:Function[] = []; // 当前要排队执行的函数队�
 const _axios = axios.create({
   baseURL: mainDomainName,
   timeout: 3000,
-  headers: {}
+  headers: {},
+  validateStatus: function (status) {
+    return status >= 200 && status < 500; 
+  },
 })
 
 // 请求拦截器
@@ -22,10 +25,13 @@ _axios.interceptors.request.use((config: any) => {
 _axios.interceptors.response.use((response) => {
   // 无感刷新token
   const {config} = response
+  console.log(response)
   if (response.status === 401) {
     requestFunctionQueue.push(() => _axios.request(config))
     TokenHandler.getNewAccessToken().then(() => {
-      requestFunctionQueue.forEach(c => c())
+      requestFunctionQueue.forEach(c => c());
+    }).finally(() => {
+      requestFunctionQueue = []
     })
   }
   if (response.data.code !== undefined) {

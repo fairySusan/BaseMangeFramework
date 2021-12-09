@@ -1,11 +1,11 @@
 <script setup lang="ts">
-import LeftSider from '../leftSider/LeftSider.vue';
+import BaseLeftSider from '../baseLeftSider/BaseLeftSider.vue';
 
 </script>
 
 <template>
   <el-container class="container">
-    <LeftSider></LeftSider>
+    <BaseLeftSider></BaseLeftSider>
     <router-view></router-view>
   </el-container>
 </template>

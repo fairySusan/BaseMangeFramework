@@ -17,7 +17,7 @@ defineProps<{
     </template>
     <template v-for="menu in menuItem.children" :key="menu.name">
       <SubMenu v-if="menu.children.length>0" :menuItem="menu"></SubMenu>
-      <el-menu-item v-else :index="menu.id" :route="menu.url">
+      <el-menu-item v-else :index="menu.id" :route="{path: menu.url}">
         <el-icon>
           <component :is="menu.icon"></component>
         </el-icon>

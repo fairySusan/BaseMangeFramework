@@ -37,4 +37,4 @@ const userInfo = UserInfoHandler.getUserInfo()
   </el-header>
 </template>
 
-<style src="./Header.scss" scoped></style>
+<style src="./BaseHeader.scss" scoped></style>
