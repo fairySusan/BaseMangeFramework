@@ -1,21 +1,13 @@
 <script setup lang="ts">
-import LeftSider from '../leftSider/LeftSider.vue';
+import Header from '../header/Header.vue';
 </script>
 
 <template>
-  <el-container class="container">
-    <LeftSider></LeftSider>
-    <el-container>
-      <el-header>
-        <div class="header flexRowSpaceBetween">
-          <span class="primaryFontColor">kkkkkk</span>
-          <span>hahahahahha</span>
-        </div>
-      </el-header>
-      <el-main>
-        <router-view></router-view>
-      </el-main>
-    </el-container>
+  <el-container direction="vertical">
+    <Header></Header>
+    <el-main>
+      <router-view></router-view>
+    </el-main>
   </el-container>
 </template>
 

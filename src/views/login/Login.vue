@@ -7,6 +7,7 @@ import {VertifyCodeI, LoginResponseI, LoginParamsI} from '@/https/login/Type'
 import { useRouter } from 'vue-router';
 import { TokenHandler } from '@/mixins/TokenUtil';
 import { UserInfoHandler } from '@/mixins/UserUtil';
+import { useStore } from '@/store';
 
 const form = reactive({
   account: '',
@@ -20,6 +21,7 @@ const rules = reactive({
   verificationCode: [{ required: true, message: '请输入验证码'}]
 })
 const router = useRouter()
+const store = useStore()
 
 // 请求验证码
 const {data, run: _GetVertifyCode} = useRequest<VertifyCodeI>(GetVertifyCode, {randomCodeFlag: '', imageBase64: ''})
@@ -43,8 +45,7 @@ const submitHandle = () => {
         const res = await login(params)
         TokenHandler.setToken(res.data.jsonWebToken);
         // 保存用户信息到本地
-        const userInfo = JSON.stringify(res.data.user);
-        UserInfoHandler.setUserInfo(userInfo);
+        store.commit('user/setUserInfo', res.data.user)
         router.push('/home')
       } catch {
         // 重新刷新验证码
@@ -75,7 +76,7 @@ const submitHandle = () => {
         <el-form-item label="验证码" prop="verificationCode">
           <el-row>
             <el-col :span="20">
-              <el-input v-model="form.verificationCode" show-password></el-input>
+              <el-input v-model="form.verificationCode"></el-input>
             </el-col>
             <el-col :span="4">
               <el-image @click="_GetVertifyCode" class="validateImage" :src="data.imageBase64" fit="fill"></el-image>

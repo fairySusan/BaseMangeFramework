@@ -1,5 +1,6 @@
 <script setup lang="ts">
-import { MenuItemI } from '../Type'
+import { MenuItemI } from '@/https/menu/Type'
+
 
 defineProps<{
   menuItem: MenuItemI
@@ -7,7 +8,7 @@ defineProps<{
 </script>
 
 <template>
-  <el-sub-menu>
+  <el-sub-menu :index="menuItem.id">
     <template #title>
       <el-icon>
         <component :is="menuItem.icon"></component>
@@ -15,8 +16,8 @@ defineProps<{
       {{menuItem.name}}
     </template>
     <template v-for="menu in menuItem.children" :key="menu.name">
-      <SubMenu v-if="menu.children" :menuItem="menu"></SubMenu>
-      <el-menu-item v-else>
+      <SubMenu v-if="menu.children.length>0" :menuItem="menu"></SubMenu>
+      <el-menu-item v-else :index="menu.id" :route="menu.url">
         <el-icon>
           <component :is="menu.icon"></component>
         </el-icon>

@@ -1,46 +1,46 @@
 
 <script setup lang="ts">
-import { reactive} from 'vue'
-import { MenuItemI } from './Type'
 import SubMenu from './subMenu/SubMenu.vue';
- const menus = reactive<MenuItemI[]>([
-    {
-      name: "首页",
-      icon: "takeaway-box",
-      url: "/home"
-    },
-    {
-      name: "列表",
-      icon: "Tools",
-      url: "/record"
-    },
-    {
-      name: "个人中心",
-      icon: "Sunset",
-      url: "/personal",
-      children: [
-        {
-          name: "重置密码",
-          icon: "Sugar",
-          url: "/personal",
-        }
-      ]
-    }
-  ])
+import { useRequest } from '@/mixins/Hooks';
+import { GetCureentUserMenus } from '@/https/menu/Menu'
+import { MenuItemI } from '@/https/menu/Type'
+
+const {data: menus} = useRequest<MenuItemI[]>(GetCureentUserMenus,[])
+
 </script>
 
 <template>
   <el-aside width="200px">
-    <el-menu>
-      <template v-for="menu in menus" :key="menu.name">
-        <SubMenu v-if="menu.children" :menuItem="menu"></SubMenu>
-        <el-menu-item v-else>
-          <el-icon>
-            <component :is="menu.icon"></component>
-          </el-icon>
-          {{menu.name}}
-        </el-menu-item>
-      </template>
-    </el-menu>
+    <div class="title">This is Title</div>
+    <el-scrollbar>
+      <el-menu>
+        <template v-for="menu in menus" :key="menu.name">
+          <SubMenu v-if="menu.children.length>0" :menuItem="menu"></SubMenu>
+          <el-menu-item v-else :index="menu.id" :route="menu.url">
+            <el-icon>
+              <component :is="menu.icon"></component>
+            </el-icon>
+            {{menu.name}}
+          </el-menu-item>
+        </template>
+      </el-menu>
+    </el-scrollbar>
   </el-aside>
 </template>
+
+<style lang="scss" scoped>
+.el-aside {
+  background-color: $background-color-base;
+}
+.title {
+  height: map-get( $header,'height');
+  line-height: map-get( $header,'height');
+  text-align: center;
+  color:white;
+  font-weight: bold;
+  background-color: map-get($colors,'primary', 'light-3');
+}
+.el-scrollbar {
+  height: calc(100% - map-get( $header,'height'));
+}
+</style>
