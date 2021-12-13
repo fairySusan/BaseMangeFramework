@@ -9,7 +9,7 @@
 body, html {
   padding: 0;
   margin: 0;
-  background-color: rgb(255, 255, 255);
+  background-color: $backgroundColor;
   color: map-get($text-color, 'primary')
 }
 </style>

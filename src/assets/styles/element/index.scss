@@ -9,6 +9,46 @@ $padding: 10px;
 
 $marginL: 20px;
 $paddingL: 20px;
+$backgroundColor: rgb(240, 240, 240);
+
+/*
+ * 自定义滚动条样式,
+ * 使用时： .scrollBarStyle(); 里面的横向纵向滚动条宽度可选，默认6px大小。
+ * @width 横向滚动条的高度
+ * @height 纵向滚动条的宽度
+*/
+.scrollBarStyle {
+
+	/*滚动条整体样式*/
+	&::-webkit-scrollbar {
+		width:10px;
+		height:10px;
+	}
+
+	/*滚动条里面小方块*/
+	&::-webkit-scrollbar-thumb {
+		border-radius: 10px;
+		box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+		background: #c7c7c7;
+	}
+
+	/*滚动条的轨道*/
+	&::-webkit-scrollbar-track {
+		box-shadow: inset 0 0 5px rgba(0, 0, 0, 0.2);
+		border-radius: 10px;
+		background: white;
+	}
+}
+
+.tableActionBtn::after {
+	content: "|";
+	display: inline-block;
+	margin: 0 5px;
+	vertical-align: text-top;
+}
+.tableActionBtn:last-of-type::after {
+	display: none;
+}
 
 
 /*------------fontsize---------*/

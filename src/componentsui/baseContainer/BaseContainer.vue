@@ -5,9 +5,11 @@ import BaseHeader from '../baseHeader/BaseHeader.vue';
 <template>
   <el-container direction="vertical">
     <BaseHeader></BaseHeader>
-    <el-main>
-      <router-view></router-view>
-    </el-main>
+    <el-scrollbar>
+      <el-main>
+        <router-view></router-view>
+      </el-main>
+    </el-scrollbar>
   </el-container>
 </template>
 

@@ -1,0 +1,1 @@
+export {default as VRoleSelectTable} from './vRolesSelectTable/VRoleSelectTable.vue'

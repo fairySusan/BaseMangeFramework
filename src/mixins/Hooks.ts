@@ -1,3 +1,4 @@
+import { BaseTableResponse } from './Interface';
 import { BaseResponse } from '@/mixins/Interface';
 import { onMounted, Ref, ref } from "vue"
 import { ElMessage, ElLoading  } from 'element-plus'
@@ -5,7 +6,7 @@ import { GetRsaPublicKey } from '@/https/login/Login';
 import JSEncrypt from 'jsencrypt/bin/jsencrypt.min.js';
 
 // 请求方法类型
-type RequestService<R = any, P extends any[] = any> = (...args: P) => Promise<BaseResponse<R>>;
+type RequestService<R = any, P extends any[] = any> = (...args: P) => Promise<BaseResponse<R> | BaseTableResponse<R>>;
 
 // http请求的钩子， 用于onMounted里需要的请求
 export function useRequest<T = any>(requestFun: RequestService<T>, initData: any, params?: any, ) {
@@ -13,8 +14,12 @@ export function useRequest<T = any>(requestFun: RequestService<T>, initData: any
   let loading = ref(true)
 
   const run = async () => {
-    const res: BaseResponse<T> = await requestFun(params)
-    data.value = res.data
+    const res: BaseResponse<T> | BaseTableResponse<T> = await requestFun(params)
+    if ((res as BaseTableResponse<T>).data.data) {
+      data.value = (res as BaseTableResponse<T>).data.data
+    } else {
+      data.value = (res as BaseResponse<T>).data
+    }
     loading.value = false
   }
 
