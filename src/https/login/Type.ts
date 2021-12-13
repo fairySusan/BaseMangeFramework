@@ -49,3 +49,27 @@ export interface VertifyCodeI{
   imageBase64:string;
   randomCodeFlag:string;
 }
+
+export interface ChangeUserInfoParamI {
+  name: string;
+	nickName: string;
+	phone: string;
+	eMail: string;
+	headProtrait?: string; // 头像
+	sex: number;
+}
+
+export interface RegisterUserInfoResultI {
+	id: number;
+	account: string;
+	creationTime: string;
+	isLocked: boolean;
+	deletedTime: string;
+//	roles: AddNewRolesResult[];
+}
+
+export interface ChangeSelfPasswordParamI {
+  oldPassword: string; // 旧密码
+	newPasswordConfirm: string; // 新密码确认
+	newPassword: string; // 新密码
+}

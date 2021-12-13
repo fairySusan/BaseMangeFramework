@@ -1,6 +1,8 @@
 import { BaseResponse } from '@/mixins/Interface';
 import { onMounted, Ref, ref } from "vue"
 import { ElMessage, ElLoading  } from 'element-plus'
+import { GetRsaPublicKey } from '@/https/login/Login';
+import JSEncrypt from 'jsencrypt/bin/jsencrypt.min.js';
 
 // 请求方法类型
 type RequestService<R = any, P extends any[] = any> = (...args: P) => Promise<BaseResponse<R>>;
@@ -99,4 +101,17 @@ function showMessage (message: MessageI | false | undefined, type: string) {
   }
 
   return true
+}
+
+// 加密hook
+export async function useEncrypt(password: string) {
+  const encryptPassword = ref('')
+  const res: BaseResponse<string> = await GetRsaPublicKey()
+  const jsEncryptTarget = new JSEncrypt();
+  jsEncryptTarget.setPublicKey(res.data);
+  encryptPassword.value = jsEncryptTarget.encrypt(password);
+
+  return {
+    encryptPassword
+  }
 }

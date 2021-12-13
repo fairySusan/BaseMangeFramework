@@ -1,6 +1,6 @@
 import _axios from "@/mixins/HttpUtil";
 import { BaseResponse } from "@/mixins/Interface";
-import { LoginParamsI, LoginResponseI, VertifyCodeI } from './Type'
+import { ChangeSelfPasswordParamI, ChangeUserInfoParamI, LoginParamsI, LoginResponseI, RegisterUserInfoResultI, VertifyCodeI } from './Type'
 
 /**
  * 登录
@@ -25,3 +25,18 @@ export const GetVertifyCode = (): Promise<BaseResponse<VertifyCodeI>> => {
 export const GetRsaPublicKey = (): Promise<BaseResponse<string>> => {
   return _axios.get('/api/account/rsa/publickey')
 }
+
+ /**
+ * 用户修改自己的个人信息
+ * @param params 
+ */
+export const ChangeUserInfo = (params: ChangeUserInfoParamI): Promise<BaseResponse<RegisterUserInfoResultI>> => {
+  return _axios.post('/api/account/modifyinfo', params)
+}
+
+   /**
+     * 用户修改自己的密码
+     */
+export const ChangePasswordByUser = (params: ChangeSelfPasswordParamI): Promise<BaseResponse<string>> => {
+      return _axios.post('/api/account/modifypassword', params)
+  }

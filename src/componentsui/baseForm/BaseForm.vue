@@ -62,6 +62,17 @@ defineProps<{
         :validate-event="item.validateEvent"
         :input-style="item.inputStyle"
       ></el-input>
+      <el-radio
+        v-for="radio in item.options"
+        v-model="model[item.prop]"
+        :label="radio.value"
+        :disabled="item.disabled"
+        :border="item.border"
+        :size="item.size"
+        :item="item.name"
+      >
+        {{radio.label}}
+      </el-radio>
     </el-form-item>
   </el-form>
 </template>
