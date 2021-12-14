@@ -1,6 +1,7 @@
 import { TokenHandler } from './TokenUtil';
 import axios, { AxiosRequestConfig } from 'axios'
 import mainDomainName from '@/config/http.config'
+import { ElMessage } from 'element-plus';
 
 let requestFunctionQueue:Function[] = []; // 当前要排队执行的函数队列列表
 
@@ -26,26 +27,40 @@ _axios.interceptors.response.use((response) => {
   // 无感刷新token
   const {config} = response
   if (response.status === 401) {
+    if (requestFunctionQueue.length === 0) {
+      TokenHandler.getNewAccessToken().then(() => {
+        requestFunctionQueue.forEach(c => c());
+      }).finally(() => {
+        requestFunctionQueue = []
+      })
+    }
     requestFunctionQueue.push(() => _axios.request(config))
-    TokenHandler.getNewAccessToken().then(() => {
-      requestFunctionQueue.forEach(c => c());
-    }).finally(() => {
-      requestFunctionQueue = []
-    })
-  }
-  if (response.data.code !== undefined) {
-    return {
-      success: response.data.code===0 ? true : false,
-      ...response.data
+  } else if (response.status === 200) {
+    if (response.data.code === 0) {
+      return {
+        success: true,
+        ...response.data
+      }
+    } else if (response.data.code === 1) {
+      ElMessage({
+        message: response.data.message,
+        grouping: true,
+        type: 'error',
+      })
+      return {
+        success: false,
+        ...response.data
+      }
+    } else if (response.data.code === undefined) {
+      return {
+        success: true,
+        code: 0,
+        data: response.data,
+        message: ''
+      }
     }
-  } else {
-    return {
-      success: true,
-      code: 0,
-      data: response.data,
-      message: ''
-    }
-  }
+  } 
+  
 }, (error) => {
   return Promise.reject(error);
 });

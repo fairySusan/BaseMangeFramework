@@ -1,3 +1,5 @@
+import { UserInfoHandler } from "./UserUtil";
+
 export default class ToolUtil {
   /**判断是否为空对象 */
   public static isEmptyObject(obj: Object) {
@@ -103,5 +105,24 @@ export default class ToolUtil {
   // 返回DatePicker禁用今天以后的函数
   public static disabledAfeterTodayDate = (time: any) => {
     return time.getTime() > Date.now()
+  }
+
+  public static validatePassword(rule:any, value:string, callback:Function){
+    const pwdRank = ToolUtil.calcPwdRank(value)
+    if(value === ''){
+        callback(new Error('未填写密码'));
+    }else if(value.length < 8 || value.length > 20){
+        callback(new Error('密码长度在8到20位'));
+    }else if (value.toLowerCase().indexOf('hx')!=-1) {
+        callback(new Error('不能使用 hx 作为密码'));
+    } else if (value.toLowerCase().indexOf(UserInfoHandler.getUserInfo()?.account as string) !== -1) {
+        callback(new Error('不能使用姓名拼音作为密码'));
+    } else if (ToolUtil.isKeyBoardContinuousChar(value)) {
+        callback(new Error("键盘连续字符不能超过 3 个"))
+    } else if (pwdRank !== 3) {
+        callback(new Error("包含数字、小写字母、大写字母、特殊符号 4 类中至少3类"))
+    } else {
+        callback()
+    }
   }
 }

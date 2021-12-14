@@ -1,7 +1,7 @@
 <script setup lang="ts">
 import { useFormSubmit,useEncrypt } from '@/mixins/Hooks'
 import { reactive, ref } from 'vue'
-import { validatePassword } from './Type'
+import ToolUtil from '@/mixins/ToolUtil'
 import {ChangeSelfPasswordParamI} from '@/https/login/Type'
 import {ChangePasswordByUser} from '@/https/login/Login'
 
@@ -11,7 +11,7 @@ const rules = {
   ],
   newPassword: [
     {required: true, message: '请输入新密码'},
-    {validator: validatePassword, }
+    {validator: ToolUtil.validatePassword, }
   ],
   newPasswordConfirm: [
     {required: true, message: '请确认新密码'},

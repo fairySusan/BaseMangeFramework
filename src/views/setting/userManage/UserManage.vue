@@ -1,14 +1,16 @@
 <script setup lang="ts">
 import {reactive, ref} from 'vue'
 import {BaseTableSearchForm, BaseTable, BaseModalButton} from '@/componentsui'
-import { useTableRequest } from '@/mixins/Hooks'
-import {getAllUsers} from '@/https/userManage/UserManage'
+import { useFormSubmit, useTableRequest } from '@/mixins/Hooks'
+import {getAllUsers, changeUserIsLocked} from '@/https/userManage/UserManage'
 import {UserManageItemI} from '@/https/userManage/Type'
 import {SexEnum} from './Type'
 import ToolUtil from '@/mixins/ToolUtil'
 import UserFormModal from './components/userForm/UserFormModal.vue'
+import ResetPasswordModal from './components/resetPassword/ResetPasswordModal.vue'
 
 const visibleUserModal = ref(false)
+const visiblePasswordModal = ref(false)
 const isEdit = ref(false)
 const currItem = ref<UserManageItemI | null>(null)
 
@@ -21,6 +23,10 @@ let queryData = reactive({
 })
 
 const {data, loading, getList,onCurrentChange,onSizeChange} = useTableRequest<UserManageItemI[]>(getAllUsers,queryData);
+const {submit: changeLock, loading:lockLoding} = useFormSubmit(changeUserIsLocked, {
+  success: '操作成功！',
+  error: '操作失败！'
+})
 
 const reset = () => {
   queryData.StartCreatedTime = ''
@@ -34,6 +40,10 @@ const onClickEdit = (data: UserManageItemI) => {
   visibleUserModal.value = true
   isEdit.value = true
   currItem.value = data
+}
+
+const onChangeLock = async (isLocked: boolean, id: number) => {
+  await changeLock({isLocked, id})
 }
 
 </script>
@@ -73,8 +83,14 @@ const onClickEdit = (data: UserManageItemI) => {
     >
       <el-table-column prop="account" label="账号" width="100" />
       <el-table-column prop="isLocked" label="锁定" width="100">
-        <template #default="scope">
-          <el-switch slot-scope={row,column,$index} v-model="scope.row.isLocked"></el-switch>
+        <template #default="{row}">
+          <el-switch
+            v-model="row.isLocked"
+            @change="(isLocked: boolean) => onChangeLock(isLocked, row.id)"
+            inline-prompt
+            active-text="是"
+            inactive-text="否"
+          ></el-switch>
         </template>
       </el-table-column>
       <el-table-column prop="name" label="姓名" width="150" />
@@ -93,7 +109,7 @@ const onClickEdit = (data: UserManageItemI) => {
       <el-table-column prop="phone" label="手机号" width="120" />
       <el-table-column prop="eMail" label="邮箱" width="180" />
       <el-table-column prop="creationTime" label="创建日期" width="180" />
-      <el-table-column prop="action" label="操作" width="180">
+      <el-table-column prop="action" label="操作" width="180" fixed="right">
         <template #default="{row}">
           <el-button
             type="text"
@@ -101,6 +117,13 @@ const onClickEdit = (data: UserManageItemI) => {
             class="tableActionBtn"
           >
             编辑
+          </el-button>
+          <el-button
+            type="text"
+            @click="visiblePasswordModal = true"
+            class="tableActionBtn"
+          >
+            重置密码
           </el-button>
         </template>
       </el-table-column>
@@ -113,8 +136,17 @@ const onClickEdit = (data: UserManageItemI) => {
     :data="currItem"
     @refresh="getList"
   ></UserFormModal>
+
+  <ResetPasswordModal
+    v-model="visiblePasswordModal"
+    :data="currItem"
+  >
+  </ResetPasswordModal>
 </div>
 </template>
 
 <style lang="scss" scoped>
+.tableActionBtn {
+  @include tableActionBtn
+}
 </style>

@@ -60,3 +60,9 @@ export interface AddUserInfoParamsI {
   sex: 0 | 1,
   roleIds: number[]
 }
+
+
+export interface ChangeUserLockedParamI {
+ id: number;
+ isLocked: boolean;
+}

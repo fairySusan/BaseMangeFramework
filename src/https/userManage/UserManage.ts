@@ -1,6 +1,6 @@
 import _axios from "@/mixins/HttpUtil";
 import { BaseResponse, BaseTableResponse } from "@/mixins/Interface";
-import {GetAllUserParamI, UserManageItemI, ModifyUserInfoParamsI, AddUserInfoParamsI} from './Type'
+import {GetAllUserParamI, UserManageItemI, ModifyUserInfoParamsI, AddUserInfoParamsI, ChangeUserLockedParamI} from './Type'
 
 /**
  * 分页获取所有用户
@@ -28,4 +28,11 @@ export const addUserInfo = (params: AddUserInfoParamsI): Promise<BaseResponse<bo
  */
 export const deleteUserInfo = (id: number): Promise<BaseResponse<string>> => {
   return _axios.post('/api/users/' + id)
+}
+
+/**
+* 更改用户是否锁定
+*/
+export const changeUserIsLocked = (params: ChangeUserLockedParamI): Promise<BaseResponse<string>> => {
+  return _axios.post('/api/users/setislocked?id=' + params.id, {isLocked: params.isLocked})
 }

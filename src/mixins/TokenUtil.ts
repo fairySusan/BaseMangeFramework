@@ -2,6 +2,7 @@ import _axios from './HttpUtil';
 import { JsonWebTokenI } from '@/https/login/Type';
 import { BaseResponse } from './Interface';
 import moment from 'moment'
+import router from '@/router';
 
 /**
  * 验证token的存取方法
@@ -27,9 +28,13 @@ export class TokenHandler {
             const params = {
                 refreshToken: refreshToken
             }
-            _axios.post('/api/jwt/refreshtoken', params).then((res) => {
-              TokenHandler.setToken(res.data);
-              resolve(res.data)
+            _axios.post('/api/jwt/refreshtoken', params).then((res: any) => {
+                if (res.success) {
+                    TokenHandler.setToken(res.data);
+                    resolve(res)   
+                } else {
+                    router.replace('/login')
+                }
             }).catch((fail) => {
               reject(fail)
             })

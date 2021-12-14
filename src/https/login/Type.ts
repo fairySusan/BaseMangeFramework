@@ -73,3 +73,8 @@ export interface ChangeSelfPasswordParamI {
 	newPasswordConfirm: string; // 新密码确认
 	newPassword: string; // 新密码
 }
+
+export interface ChangePasswordAdminI {
+  id: number;
+  password: string;
+}

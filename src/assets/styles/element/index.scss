@@ -40,14 +40,18 @@ $backgroundColor: rgb(240, 240, 240);
 	}
 }
 
-.tableActionBtn::after {
-	content: "|";
-	display: inline-block;
-	margin: 0 5px;
-	vertical-align: text-top;
-}
-.tableActionBtn:last-of-type::after {
-	display: none;
+/*表格操作列的按钮样式*/
+@mixin tableActionBtn {
+	margin-left:0;
+	&::after {
+		content: "|";
+		display: inline-block;
+		margin: 0 5px;
+		vertical-align: text-top;
+	}
+	&:last-of-type::after {
+		display: none;
+	}
 }
 
 
