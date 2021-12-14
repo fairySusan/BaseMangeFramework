@@ -1,0 +1,104 @@
+<script setup lang="ts">
+import { useFormSubmit } from '@/mixins/Hooks'
+import {ref, reactive, watch} from 'vue'
+import {MenuFormI, menuFormRules} from '../Type'
+import {changeMenuItem} from "@/https/menu/Menu"
+import {ChangeMenuParamI,MenuItemI} from  "@/https/menu/Type"
+const props = defineProps<{ 
+  isEdit: boolean,
+  modelValue: boolean,
+  data: MenuItemI | null
+}>()
+
+const emit = defineEmits<{
+  (event: 'update:modelValue', visible:boolean): void,
+  (event: 'update:isEdit', isEdit:boolean): void
+}>()
+const visible = ref(false)
+const menuForm = ref<any>(null)
+const formData = reactive<MenuFormI>({
+  id: null,
+  name: '',
+  icon: '',
+  url: ''
+})
+
+const {submit: editSubmit, loading} = useFormSubmit<string, ChangeMenuParamI>(changeMenuItem)
+
+const onClose = () => {
+  resetForm()
+  emit('update:isEdit', false)
+  emit('update:modelValue', false)
+}
+
+watch(() => props.modelValue, () => {
+  visible.value = props.modelValue
+})
+
+watch(() => props.isEdit, () => {
+  if (props.data && props.isEdit) {
+    formData.id = props.data.id
+    formData.name = props.data.name
+    formData.icon = props.data.icon
+    formData.url = props.data.url
+  }
+})
+
+const onSubmit = async () => {
+
+  try {
+    await editSubmit(formData)
+  }catch(e) {}
+}
+
+const resetForm = () => {
+  menuForm.value.clearValidate() // 去除验证信息
+  formData.name = ''
+  formData.icon = ''
+  formData.url = ''
+}
+
+</script>
+
+<template>
+  <el-dialog
+    append-to-body
+    v-model="visible"
+    :title="isEdit?'编辑': '新增'"
+    width="30vw"
+    center
+    @close="emit('update:modelValue', false)"
+  >
+    <el-form ref="menuForm" :model="formData" label-width="80px" :rules="menuFormRules">
+      <el-form-item prop="name" label="名称">
+        <el-input v-model="formData.name"></el-input>
+      </el-form-item>
+      <el-form-item prop="url" label="路径">
+        <el-input v-model="formData.url"></el-input>
+      </el-form-item>
+      <el-form-item prop="url" label="图标">
+        <el-button type="text">选择</el-button>
+      </el-form-item>
+    </el-form>
+    <template #footer>
+      <el-button
+        style="width: 100px;"
+        :auto-insert-space="true"
+        @click="onClose"
+      >
+        取消
+      </el-button>
+      <el-button
+        style="width: 100px;"
+        type="primary"
+        :auto-insert-space="true"
+        @click="onSubmit"
+        :loading="loading"
+      >
+        提交
+      </el-button>
+    </template>
+  </el-dialog>
+</template>
+
+<style lang="scss" scoped></style>

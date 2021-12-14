@@ -53,10 +53,10 @@ const showDialog = () => {
     center
   >
     <slot name="content"></slot>
-    <!-- <template #footer>
+    <template #footer>
       <el-button style="width: 100px;" :auto-insert-space="true" @click="visible=false">取消</el-button>
       <el-button style="width: 100px;" type="primary" :auto-insert-space="true">提交</el-button>
-    </template> -->
+    </template>
   </el-dialog>
 </template>
 
