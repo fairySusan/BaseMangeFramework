@@ -1,11 +1,11 @@
-export class ToolUtil {
+export default class ToolUtil {
   /**判断是否为空对象 */
-  public isEmptyObject(obj: Object) {
+  public static isEmptyObject(obj: Object) {
     return Object.keys(obj).length === 0
   }
 
   /**深拷贝对象 */
-  public deepClone (obj: any): any {
+  public static deepClone (obj: any): any {
     const objClone: any = Array.isArray(obj) ? [] : {};
     if (obj && typeof obj === "object") {
       for (const key in obj) {
@@ -24,7 +24,7 @@ export class ToolUtil {
   /**
    * 判断密码是否有连续的三个字符
    */
-  public isKeyBoardContinuousChar(str: any) {
+  public static isKeyBoardContinuousChar(str: any) {
     let c1 = [
       ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+'],
       ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '{', '}', '|'],
@@ -78,7 +78,7 @@ export class ToolUtil {
   }
 
    //密码强度检测函数
-  public calcPwdRank(l_Content: string) {
+  public static calcPwdRank(l_Content: string) {
     if (l_Content.length < 8 || /^[0-9]{1,8}$/.test(l_Content)) {
       return 0
     }
@@ -98,5 +98,10 @@ export class ToolUtil {
       ls = 3;
     }
     return ls;
+  }
+
+  // 返回DatePicker禁用今天以后的函数
+  public static disabledAfeterTodayDate = (time: any) => {
+    return time.getTime() > Date.now()
   }
 }

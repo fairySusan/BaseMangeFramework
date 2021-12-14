@@ -1,25 +1,21 @@
-import { BaseTableResponse } from './Interface';
-import { BaseResponse } from '@/mixins/Interface';
+import { BaseTableResponse, BaseResponse,initTableData} from './Interface';
 import { onMounted, Ref, ref } from "vue"
 import { ElMessage, ElLoading  } from 'element-plus'
 import { GetRsaPublicKey } from '@/https/login/Login';
 import JSEncrypt from 'jsencrypt/bin/jsencrypt.min.js';
 
 // 请求方法类型
-type RequestService<R = any, P extends any[] = any> = (...args: P) => Promise<BaseResponse<R> | BaseTableResponse<R>>;
+type RequestService<R = any, P extends any[] = any> = (...args: P) => Promise<BaseResponse<R>>;
 
 // http请求的钩子， 用于onMounted里需要的请求
 export function useRequest<T = any>(requestFun: RequestService<T>, initData: any, params?: any, ) {
   const data: Ref<T> = ref(initData)
-  let loading = ref(true)
+  let loading = ref(false)
 
   const run = async () => {
-    const res: BaseResponse<T> | BaseTableResponse<T> = await requestFun(params)
-    if ((res as BaseTableResponse<T>).data.data) {
-      data.value = (res as BaseTableResponse<T>).data.data
-    } else {
-      data.value = (res as BaseResponse<T>).data
-    }
+    loading.value = true
+    const res: BaseResponse<T> = await requestFun(params)
+    data.value = (res as BaseResponse<T>).data
     loading.value = false
   }
 
@@ -31,6 +27,47 @@ export function useRequest<T = any>(requestFun: RequestService<T>, initData: any
     data,
     loading,
     run,
+  }
+}
+
+/**
+ * 表格请求的钩子
+ */
+// 请求方法类型
+type RequestTableService<R = any, P extends any[] = any> = (...args: P) => Promise<BaseResponse<BaseTableResponse<R>>>;
+
+export function useTableRequest<T = any>(requestFun: RequestTableService<T>, params?: any, ) {
+  const data: Ref<BaseTableResponse<T>> = ref(initTableData)
+  let loading = ref(false)
+
+  const getList = async () => {
+    loading.value = true
+    const res: BaseResponse<BaseTableResponse<T>> = await requestFun(params)
+    data.value = res.data
+    loading.value = false
+  }
+
+  
+  const onCurrentChange = (pageIndex: number) => {
+    params.PageIndex = pageIndex
+    getList()
+  }
+
+  const onSizeChange = (pageSize:number) => {
+    params.PageSize = pageSize
+    getList()
+  }
+
+  onMounted(() => {
+    getList()
+  })
+
+  return {
+    data,
+    loading,
+    getList,
+    onCurrentChange,
+    onSizeChange
   }
 }
 
@@ -53,14 +90,14 @@ export function useFormSubmit<T, P>(submitFun: any, message?: MessageI | false) 
   const submit = async (params: P) => {
     loading.value = true
 
-    let l: any = null
-    if (showMessage(message, 'loading')) {
-      l = ElLoading.service({
-        text: message ? (message?.loading || '正在提交') : '正在提交'
-      })
-    }
+    // let l: any = null
+    // if (showMessage(message, 'loading')) {
+    //   l = ElLoading.service({
+    //     text: message ? (message?.loading || '正在提交') : '正在提交'
+    //   })
+    // }
     const res: BaseResponse<T> = await submitFun(params)
-    l && l.close()
+    //l && l.close()
   
     loading.value = false
     if (res.success) {

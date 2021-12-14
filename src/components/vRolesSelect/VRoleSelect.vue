@@ -8,15 +8,15 @@ defineProps<{
 }>()
 
 const emit = defineEmits<{
-  (event: 'update', selectRoles: any[]): void
+  (event: 'update:modelValue', selectRoles: any[]): void
 }>()
 
-const selectRoles = ref([])
+const selectRoleIds = ref<number[]>([])
 const {data, loading} = useRequest<RolesItemI[]>(GetAllRolesList, [])
 
-const onChange = (val: any) => {
-  selectRoles.value = val;
-  emit('update', selectRoles.value)
+const onChange = (ids: number[]) => {
+  selectRoleIds.value = ids;
+  emit('update:modelValue', selectRoleIds.value)
 }
 
 </script>

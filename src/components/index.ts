@@ -1,1 +1,1 @@
-export {default as VRoleSelectTable} from './vRolesSelectTable/VRoleSelectTable.vue'
+export {default as VRoleSelect} from './vRolesSelect/VRoleSelect.vue'

@@ -16,6 +16,10 @@ export interface GetAllUserParamI {
 }
 
 export interface UserManageItemI {
+	id: number;
+	account: string;
+	creationTime: string;
+	isLocked: boolean;
   name: string;
 	nickName: string;
 	phone: string;
@@ -23,4 +27,36 @@ export interface UserManageItemI {
 	eMail: string;
 	headProtrait: string; // 头像
 	sex: number;
+	roles: {
+		creationTime: string;
+		creatorId: number;
+		creatorName: string;
+		id: number;
+		isDefault: boolean;
+		isLocked: boolean;
+		name: string;
+		remark: string;
+	}[]
+}
+
+export interface ModifyUserInfoParamsI {
+	id: number,
+	name: string,
+  nickName: string,
+  phone: string,
+  jobNumber:string,
+  eMail: string,
+  sex: 0 | 1,
+  roleIds: number[]
+}
+
+export interface AddUserInfoParamsI {
+	account: string;
+	name: string,
+  nickName: string,
+  phone: string,
+  jobNumber:string,
+  eMail: string,
+  sex: 0 | 1,
+  roleIds: number[]
 }

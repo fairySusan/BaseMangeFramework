@@ -1,48 +1,110 @@
 <script setup lang="ts">
 import {reactive, ref,watch} from 'vue'
-import {VRoleSelectTable} from '@/components'
-import { userFormRules } from '../../Type'
+import {VRoleSelect} from '@/components'
+import { userFormRules,UserFormI } from '../../Type'
+import { UserManageItemI,ModifyUserInfoParamsI, AddUserInfoParamsI } from '@/https/userManage/Type'
+import { useFormSubmit } from '@/mixins/Hooks'
+import {changeUserInfo} from '@/https/userManage/UserManage'
 
 const props = defineProps<{
   modelValue: boolean,
-  title: string
+  isEdit: boolean // 是编辑弹窗还是新增弹窗
+  data: UserManageItemI | null
 }>()
 
 const emit = defineEmits<{
-  (event: 'update:modelValue', visible: boolean): void
+  (event: 'update:modelValue', visible: boolean): void,
+  (event: 'update:isEdit', isEdit: boolean): void,
+  (event: 'refresh'): void
 }>()
 
 const visible = ref(false)
+const userform = ref<any>(null)
 
-const formData = reactive({
+const formData = reactive<UserFormI>({
   account: '',
+  name: '',
   nickName: '',
   phone: '',
   jobNumber:'',
   eMail: '',
-  sex: '',
-  roles: []
+  sex: 0,
+  roleIds: []
 })
+
+const {loading, submit} = useFormSubmit<boolean, ModifyUserInfoParamsI | AddUserInfoParamsI>(changeUserInfo)
 
 watch(() => props.modelValue, () => {
   visible.value = props.modelValue
 })
+
+watch(() => props.isEdit, () => {
+  if (props.data && props.isEdit) {
+    formData.id = props.data.id
+    formData.account = props.data.account
+    formData.name = props.data.name
+    formData.nickName = props.data.nickName
+    formData.phone = props.data.phone
+    formData.jobNumber = props.data.jobNumber
+    formData.eMail = props.data.eMail
+    formData.sex = props.data.sex
+    formData.roleIds = props.data.roles.map(item => item.id)
+  }
+})
+
+const onClose = () => {
+  resetForm()
+  emit('update:isEdit', false)
+  emit('update:modelValue', false)
+}
+
+const resetForm = () => {
+  userform.value.clearValidate() // 去除验证信息
+  formData.account = ''
+  formData.name = ''
+  formData.nickName = ''
+  formData.phone = ''
+  formData.jobNumber = ''
+  formData.eMail = ''
+  formData.sex = 0
+  formData.roleIds = []
+}
+
+const onSubmit = () => {
+  userform.value.validate(async (valid: boolean) => {
+    if (valid) {
+      try {
+        if (props.isEdit) {
+          await submit(formData as ModifyUserInfoParamsI)
+        } else {
+          await submit(formData as AddUserInfoParamsI)
+        }
+        onClose()
+        emit('refresh')
+      } catch(e) {}
+    }
+  })
+}
+
 </script>
 
 <template>
   <el-dialog
     append-to-body
     v-model="visible"
-    :title="title"
+    :title="isEdit?'编辑': '新增'"
     width="40vw"
     center
     @close="emit('update:modelValue', false)"
   >
-    <el-form label-width="80px" inline :rules="userFormRules">
-      <el-form-item prop="account" label="账户名">
-        <el-input placeholder="请输入账户名" v-model="formData.account"></el-input>
+    <el-form ref="userform" v-loading="loading" :model="formData" label-width="80px" inline :rules="userFormRules">
+      <el-form-item prop="account" label="账号">
+        <el-input :disabled="isEdit" placeholder="请输入账号" v-model="formData.account"></el-input>
       </el-form-item>
-      <el-form-item prop="account" label="别名">
+      <el-form-item prop="name" label="姓名">
+        <el-input placeholder="请输入姓名" v-model="formData.name"></el-input>
+      </el-form-item>
+      <el-form-item prop="nickName" label="别名">
         <el-input placeholder="请输入别名" v-model="formData.nickName"></el-input>
       </el-form-item>
       <el-form-item prop="phone" label="手机号">
@@ -58,13 +120,27 @@ watch(() => props.modelValue, () => {
         <el-radio :label="0" v-model="formData.sex">男</el-radio>
         <el-radio :label="1" v-model="formData.sex">女</el-radio>
       </el-form-item>
-      <el-form-item required style="width: 97%" prop="roles" label="角色">
-        <VRoleSelectTable v-model="formData.roles"></VRoleSelectTable>
+      <el-form-item style="width: 97%" prop="roleIds" label="角色">
+        <VRoleSelect v-model="formData.roleIds"></VRoleSelect>
       </el-form-item>
     </el-form>
     <template #footer>
-      <el-button style="width: 100px;" :auto-insert-space="true" @click="emit('update:modelValue', false)">取消</el-button>
-      <el-button style="width: 100px;" type="primary" :auto-insert-space="true">提交</el-button>
+      <el-button
+        style="width: 100px;"
+        :auto-insert-space="true"
+        @click="onClose"
+      >
+        取消
+      </el-button>
+      <el-button
+        style="width: 100px;"
+        type="primary"
+        :auto-insert-space="true"
+        @click="onSubmit"
+        :loading="loading"
+      >
+        提交
+      </el-button>
     </template>
   </el-dialog>
 </template>

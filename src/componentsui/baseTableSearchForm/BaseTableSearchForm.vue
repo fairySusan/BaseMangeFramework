@@ -3,6 +3,11 @@ import {defineProps} from 'vue'
 defineProps<{
   model: {[key:string]:any}
 }>()
+
+const emit = defineEmits<{
+  (event: 'search'): void,
+  (event: 'reset'): void
+}>()
 </script>
 
 <template>
@@ -14,8 +19,8 @@ defineProps<{
   >
     <slot></slot>
     <el-form-item>
-      <el-button type="primary">查询</el-button>
-      <el-button>重置</el-button>
+      <el-button type="primary" @click="emit('search')">查询</el-button>
+      <el-button @click="emit('reset')">重置</el-button>
       <slot name="button"></slot>
     </el-form-item>
   </el-form>
