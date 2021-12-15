@@ -4,6 +4,7 @@ import router from './router'
 import store, {key} from './store'
 import 'element-plus/es/components/message/style/css'
 import GlobalConfig from './config/global.config'
+import zhCn from 'element-plus/lib/locale/lang/zh-cn'
 
 createApp(App)
 .use(router)

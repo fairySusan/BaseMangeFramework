@@ -1,6 +1,5 @@
 <script setup lang="ts">
 import BaseLeftSider from '../baseLeftSider/BaseLeftSider.vue';
-
 </script>
 
 <template>
