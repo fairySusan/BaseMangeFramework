@@ -1,11 +1,24 @@
 <script setup lang="ts">
+/*
+组件说明：一个可以带有弹窗的按钮
+组件用法：
+<BaseModalButton v-model="visible">
+  新增
+  <template #content>
+    ....
+  </template>
+</BaseModalButton>
+插槽:
+#default: 自定义按钮
+#content: 自定义弹窗的内容
+*/
 import {ref, watch} from 'vue'
 const props = withDefaults(defineProps<{
   modelValue: boolean,
-  // 弹窗的属性
+  // 弹窗的属性，参照element plus的dialog组件属性
   title?: string, // 弹窗标题
   width?: string, // 弹窗宽度
-  //按钮的属性
+  //按钮的属性，参照element plus的button组件属性
   type?: 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'text',
   plain?: boolean,
   round?: boolean,
@@ -55,10 +68,6 @@ watch(() => props.modelValue, () => {
     @close="emit('update:modelValue', false)"
   >
     <slot name="content"></slot>
-    <!-- <template #footer>
-      <el-button style="width: 100px;" auto-insert-space @click="emit('update:modelValue', false)">取消</el-button>
-      <el-button style="width: 100px;" type="primary" auto-insert-space>提交</el-button>
-    </template> -->
   </el-dialog>
 </template>
 

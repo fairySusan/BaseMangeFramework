@@ -1,5 +1,9 @@
 <script setup lang="ts">
-import {ref, watch} from 'vue'
+/* 
+组件说明：element ui的icons选择面板
+组件使用：<VELIconForm @select="onSelectIcon"></VELIconForm>
+ */
+import {ref} from 'vue'
 import * as ElementIcons from '@element-plus/icons'
 const emit = defineEmits<{
   (event: 'select', iconName:string):void

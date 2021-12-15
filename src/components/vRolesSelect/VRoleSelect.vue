@@ -1,4 +1,8 @@
 <script setup lang="ts">
+/* 
+组件说明：角色多选的Select组件
+组件使用：<VRoleSelect v-model="roleIds"></VRoleSelect>
+ */
 import {ref} from 'vue'
 import { useRequest } from '@/mixins/Hooks';
 import {GetAllRolesList} from '@/https/roles/Roles'

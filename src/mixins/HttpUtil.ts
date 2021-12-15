@@ -1,3 +1,4 @@
+import ToolUtil from '@/mixins/ToolUtil';
 import { TokenHandler } from './TokenUtil';
 import axios, { AxiosRequestConfig } from 'axios'
 import mainDomainName from '@/config/http.config'
@@ -24,17 +25,9 @@ _axios.interceptors.request.use((config: any) => {
 
 // 响应拦截器
 _axios.interceptors.response.use((response) => {
-  // 无感刷新token
-  const {config} = response
   if (response.status === 401) {
-    if (requestFunctionQueue.length === 0) {
-      TokenHandler.getNewAccessToken().then(() => {
-        requestFunctionQueue.forEach(c => c());
-      }).finally(() => {
-        requestFunctionQueue = []
-      })
-    }
-    requestFunctionQueue.push(() => _axios.request(config))
+    // 将401的请求在刷新token后重新再次请求-无感刷新token
+    freshRequestQueue(response.config)
   } else if (response.status === 200) {
     if (response.data.code === 0) {
       return {
@@ -64,6 +57,21 @@ _axios.interceptors.response.use((response) => {
 }, (error) => {
   return Promise.reject(error);
 });
+
+function freshRequestQueue (params: any) {
+  // 当requestFunctionQueue的length === 0 说明是刚初始化或者刚清过一次队列，此时再开始一次新的事件循环
+  if (requestFunctionQueue.length === 0) {
+    ToolUtil.deferCall(() => {
+      TokenHandler.getNewAccessToken().then(() => {
+        let request
+        while(request = requestFunctionQueue.shift()) {
+          request()
+        }
+      })
+    })
+  }
+  requestFunctionQueue.push(() => _axios.request(params))
+}
 
 
 export default _axios

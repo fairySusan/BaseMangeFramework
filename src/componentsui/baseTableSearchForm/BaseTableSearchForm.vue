@@ -1,4 +1,17 @@
 <script setup lang="ts">
+/* 
+组件说明：表格页面的查询条件模块组件的封装，统一样式风格
+组件使用: 
+<BaseTableSearchForm 
+  :model="queryData"
+  @search="onSearch"
+  @reset="onReset"
+></BaseTableSearchForm>
+
+插槽：
+#default: 查询条件表单控件
+#button：额外的按钮
+*/
 defineProps<{
   model: {[key:string]:any}
 }>()

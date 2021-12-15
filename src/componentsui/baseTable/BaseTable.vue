@@ -1,4 +1,17 @@
-<script setup lang="ts">import { BaseTableResponse } from '@/mixins/Interface';
+<script setup lang="ts">
+/* 
+组件说明： 封装了翻页组件的表格组件
+组件使用：
+data的数据类型是：BaseTableResponse<T>
+const {data, loading, getList,onCurrentChange,onSizeChange} = useTableRequest<UserManageItemI[]>(getAllUsers,queryData);
+<BaseTable
+  :data="data"
+  :loading="loading"
+  @currentChange="onCurrentChange"
+  @sizeChange="onSizeChange"
+></BaseTable>
+ */
+import { BaseTableResponse } from '@/mixins/Interface';
 
 defineProps<{
   data: BaseTableResponse<any>,

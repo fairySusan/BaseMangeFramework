@@ -140,8 +140,7 @@ const onChangeLock = async (isLocked: boolean, id: number) => {
   <ResetPasswordModal
     v-model="visiblePasswordModal"
     :data="currItem"
-  >
-  </ResetPasswordModal>
+  ></ResetPasswordModal>
 </div>
 </template>
 

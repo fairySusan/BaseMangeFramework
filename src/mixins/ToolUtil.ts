@@ -125,4 +125,9 @@ export default class ToolUtil {
         callback()
     }
   }
+
+  // 将函数放入异步队列来执行
+  public static deferCall(fn: (value: void) => void | PromiseLike<void>) {
+    return Promise.resolve().then(fn)
+  }
 }
