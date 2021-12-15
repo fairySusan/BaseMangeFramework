@@ -36,7 +36,7 @@ const emit  = defineEmits<{
 </template>
 
 <style lang="scss" scoped>
-:deep.el-table--scrollable-x .el-table__body-wrapper{
+:deep(.el-table--scrollable-x .el-table__body-wrapper){
   @extend .scrollBarStyle;
 }
 .pagination {
