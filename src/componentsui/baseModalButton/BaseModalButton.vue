@@ -46,7 +46,6 @@ watch(() => props.modelValue, () => {
 
 <template>
   <el-button
-    :class="type==='text' && 'tableActionBtn'"
     @click="emit('update:modelValue', true)"
     :type="type"
     :plain="plain"

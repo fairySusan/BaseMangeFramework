@@ -4,8 +4,9 @@ import { useRequest } from '@/mixins/Hooks';
 import {getAllMenuList} from '@/https/menu/Menu'
 import { MenuItemI } from '@/https/menu/Type';
 import MenuFormModal from './components/MenuFormModal.vue';
-import {BaseTableSearchForm} from '@/componentsui'
+import {BaseConfirmPopButton} from '@/componentsui'
 import { MenuFormI } from './Type';
+import BaseConfirmButton from '../../../componentsui/baseConfirmButton/BaseConfirmButton.vue';
 
 const {data} = useRequest<MenuItemI[]>(getAllMenuList, [])
 const currTable = ref<MenuItemI[]>([])

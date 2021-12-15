@@ -10,7 +10,11 @@ import zhCn from 'element-plus/lib/locale/lang/zh-cn'
     <el-scrollbar>
       <el-config-provider :locale="zhCn">
         <el-main>
-          <router-view></router-view>
+          <router-view v-slot="{Component}">
+            <transition name="el-fade-in-linear">
+              <component :is="Component" />
+            </transition>
+          </router-view>
         </el-main>
       </el-config-provider>
     </el-scrollbar>

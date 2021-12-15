@@ -1,6 +1,6 @@
 <script setup lang="ts">
 import {reactive, ref} from 'vue'
-import {BaseTableSearchForm, BaseTable, BaseModalButton} from '@/componentsui'
+import {BaseTableSearchForm, BaseTable, BaseModalButton, BaseConfirmPopButton, BaseConfirmButton} from '@/componentsui'
 import { useFormSubmit, useTableRequest } from '@/mixins/Hooks'
 import {getAllUsers, changeUserIsLocked} from '@/https/userManage/UserManage'
 import {UserManageItemI} from '@/https/userManage/Type'
@@ -13,6 +13,7 @@ const visibleUserModal = ref(false)
 const visiblePasswordModal = ref(false)
 const isEdit = ref(false)
 const currItem = ref<UserManageItemI | null>(null)
+const confirmDelete = ref(false)
 
 let queryData = reactive({
   StartCreatedTime: '',
@@ -125,10 +126,27 @@ const onChangeLock = async (isLocked: boolean, id: number) => {
           >
             重置密码
           </el-button>
+           <el-button
+            type="text"
+            @click="confirmDelete = true"
+            class="tableActionBtn"
+          >
+            删除
+          </el-button>
         </template>
       </el-table-column>
     </BaseTable>
   </div>
+
+  <BaseConfirmButton
+    :needButton="false"
+    type="text"
+    v-model="confirmDelete"
+  >
+    <template #content>
+      <div style="text-align: center;">再次确认是否删除该用户？</div>
+    </template>
+  </BaseConfirmButton>
 
   <UserFormModal
     v-model="visibleUserModal"

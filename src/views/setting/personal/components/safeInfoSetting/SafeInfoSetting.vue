@@ -77,7 +77,7 @@ const submit = () => {
   width: 20vw;
 }
 .settingTitle {
- @extend .marginBottomL;
+ @extend .marginTopBottom;
  @extend .fontSizeM;
 }
 </style>

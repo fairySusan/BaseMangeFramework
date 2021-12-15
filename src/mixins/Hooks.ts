@@ -14,9 +14,14 @@ export function useRequest<T = any>(requestFun: RequestService<T>, initData: any
 
   const run = async () => {
     loading.value = true
-    const res: BaseResponse<T> = await requestFun(params)
-    data.value = (res as BaseResponse<T>).data
-    loading.value = false
+    try {
+      const res: BaseResponse<T> = await requestFun(params)
+      data.value = (res as BaseResponse<T>).data
+      loading.value = false
+    } catch(e: any) {
+      data.value = initData
+      loading.value = false
+    }
   }
 
   onMounted(() => {
@@ -42,9 +47,14 @@ export function useTableRequest<T = any>(requestFun: RequestTableService<T>, par
 
   const getList = async () => {
     loading.value = true
-    const res: BaseResponse<BaseTableResponse<T>> = await requestFun(params)
-    data.value = res.data
-    loading.value = false
+    try {
+      const res: BaseResponse<BaseTableResponse<T>> = await requestFun(params)
+      data.value = res.data
+      loading.value = false
+    } catch(e:any) {
+      data.value = initTableData
+      loading.value = false
+    }
   }
 
   
@@ -89,33 +99,25 @@ export function useFormSubmit<T, P>(submitFun: any, message?: MessageI | false) 
 
   const submit = async (params: P) => {
     loading.value = true
-
-    // let l: any = null
-    // if (showMessage(message, 'loading')) {
-    //   l = ElLoading.service({
-    //     text: message ? (message?.loading || '正在提交') : '正在提交'
-    //   })
-    // }
-    const res: BaseResponse<T> = await submitFun(params)
-    //l && l.close()
-  
-    loading.value = false
-    if (res.success) {
+    try {
+      const res: BaseResponse<T> = await submitFun(params)
       if (showMessage(message, 'success')) {
         ElMessage({
           message: message ? (message?.success || '提交成功!') : '提交成功!' ,
           type: 'success',
         })
       }
+      loading.value = false
       return Promise.resolve(res)
-    } else {
+    } catch(e: any) {
       if (showMessage(message, 'error')) {
         ElMessage({
           message: message ? (message?.error	 || '提交失败!') : '提交失败!',
           type: 'error',
         })
       }
-      return Promise.reject(res.message)
+      loading.value = false
+      return Promise.reject(e.message)
     }
   }
  
