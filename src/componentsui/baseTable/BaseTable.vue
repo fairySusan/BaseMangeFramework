@@ -50,7 +50,7 @@ const emit  = defineEmits<{
 
 <style lang="scss" scoped>
 :deep(.el-table--scrollable-x .el-table__body-wrapper){
-  @extend .scrollBarStyle;
+  @include scrollBarStyle;
 }
 .pagination {
   display: flex;

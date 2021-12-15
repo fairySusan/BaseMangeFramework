@@ -29,12 +29,12 @@ const onInput = (value: string) => {
   <div height="40vh">
     <el-input v-model="keyWord" @input="onInput" placeholder="搜索图标" clearable></el-input>
     <el-scrollbar height="50vh">
-      <div class="iconBlock">
+      <div class="marginTop flexRowWrap">
         <div class="iconWrap" v-for="iconName in IconNames" @click="emit('select', iconName)">
           <el-icon size="24px">
             <component :is="iconName"></component>
           </el-icon>
-          <span class="iconName">{{iconName}}</span>
+          <span class="fontSizeMini">{{iconName}}</span>
         </div>
       </div>
      </el-scrollbar>
@@ -42,20 +42,15 @@ const onInput = (value: string) => {
 </template>
 
 <style lang="scss" scoped>
-.iconBlock {
-  @extend .marginTop;
-  @extend .flexRowWrap;
-}
-.iconName {
-  @extend .fontSizeMini
-}
 .iconWrap {
   width: 100px;
   margin-bottom: 10px;
+  display: flex;
+	flex-direction: column;
+	align-items: center;
   &:hover, &:active {
     color: $color-primary;
     cursor: default;
   };
-  @extend .flexColumnAlignItemCenter;
 }
 </style>

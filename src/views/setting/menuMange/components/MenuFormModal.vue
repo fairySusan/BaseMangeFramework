@@ -86,7 +86,7 @@ const onSelectIcon = (iconName: string) => {
         <el-input v-model="formData.url"></el-input>
       </el-form-item>
       <el-form-item prop="url" label="图标">
-        <el-icon size="24px" class="selectIcon">
+        <el-icon size="24px" class="verticalAlignMid marginRight">
           <component :is="formData.icon"></component>
         </el-icon>
         <BaseModalButton
@@ -123,8 +123,4 @@ const onSelectIcon = (iconName: string) => {
 </template>
 
 <style lang="scss" scoped>
-.selectIcon {
-  @extend .verticalAlignMid;
-  margin-right: 10px;
-}
 </style>

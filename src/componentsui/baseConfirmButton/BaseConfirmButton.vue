@@ -73,7 +73,7 @@ watch(() => props.modelValue, () => {
 >
   <template #title>
     <slot name="title">
-      <div class="dialogTitle">
+      <div class="flexCenter">
         <el-icon>
           <component :is="titleIcon"></component>
         </el-icon>
@@ -90,9 +90,6 @@ watch(() => props.modelValue, () => {
 </template>
 
 <style lang="scss" scoped>
-.dialogTitle {
-  @extend .flexCenter
-}
 .titleText {
   margin-left: 10px;
 }

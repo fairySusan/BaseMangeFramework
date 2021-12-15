@@ -44,7 +44,7 @@ const submit = () => {
 
 <template>
   <el-container direction="vertical">
-    <div class="settingTitle">个人基本信息设置</div>
+    <div class="marginTopBottom fontSizeM">个人基本信息设置</div>
     <el-form ref="personalForm" :model="formData" label-position="left"  label-width="80px" :rules="rules">
       <el-form-item label="姓名" prop="name">
         <el-input v-model="formData.name"></el-input>
@@ -72,9 +72,5 @@ const submit = () => {
 <style lang="scss" scoped>
 .el-form {
   width: 20vw;
-}
-.settingTitle {
- @extend .marginTopBottom;
- @extend .fontSizeM;
 }
 </style>

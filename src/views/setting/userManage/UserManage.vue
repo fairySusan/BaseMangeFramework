@@ -163,7 +163,4 @@ const onChangeLock = async (isLocked: boolean, id: number) => {
 </template>
 
 <style lang="scss" scoped>
-.tableActionBtn {
-  @include tableActionBtn
-}
 </style>

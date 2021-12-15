@@ -54,7 +54,7 @@ const submit = () => {
 
 <template>
   <el-container direction="vertical">
-    <div class="settingTitle">安全设置</div>
+    <div class="settingTitle marginTopBottom fontSizeM">安全设置</div>
     <el-form ref="safeForm" :model="formData" label-position="left"  label-width="120px" :rules="rules">
       <el-form-item label="旧密码" prop="oldPassword">
         <el-input v-model="formData.oldPassword" show-password></el-input>
@@ -75,9 +75,5 @@ const submit = () => {
 <style lang="scss" scoped>
 .el-form {
   width: 20vw;
-}
-.settingTitle {
- @extend .marginTopBottom;
- @extend .fontSizeM;
 }
 </style>
