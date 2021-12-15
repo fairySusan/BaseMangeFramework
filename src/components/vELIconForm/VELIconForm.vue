@@ -1,0 +1,57 @@
+<script setup lang="ts">
+import {ref, watch} from 'vue'
+import * as ElementIcons from '@element-plus/icons'
+const emit = defineEmits<{
+  (event: 'select', iconName:string):void
+}>()
+
+const elIconNames = Object.keys(ElementIcons)
+const keyWord = ref('')
+const IconNames = ref<string[]>(elIconNames)
+
+const onInput = (value: string) => {
+  if (!value) {
+    IconNames.value = elIconNames
+  } else {
+    IconNames.value = IconNames.value.filter(name => {
+      return name.toLowerCase().includes(value.toLowerCase()) ||
+      value.toLowerCase().includes(name.toLowerCase())
+    })
+  }
+}
+</script>
+
+<template>
+  <div height="40vh">
+    <el-input v-model="keyWord" @input="onInput" placeholder="搜索图标" clearable></el-input>
+    <el-scrollbar height="50vh">
+      <div class="iconBlock">
+        <div class="iconWrap" v-for="iconName in IconNames" @click="emit('select', iconName)">
+          <el-icon size="24px">
+            <component :is="iconName"></component>
+          </el-icon>
+          <span class="iconName">{{iconName}}</span>
+        </div>
+      </div>
+     </el-scrollbar>
+  </div>
+</template>
+
+<style lang="scss" scoped>
+.iconBlock {
+  @extend .marginTop;
+  @extend .flexRowWrap;
+}
+.iconName {
+  @extend .fontSizeMini
+}
+.iconWrap {
+  width: 100px;
+  margin-bottom: 10px;
+  &:hover, &:active {
+    color: $color-primary;
+    cursor: default;
+  };
+  @extend .flexColumnAlignItemCenter;
+}
+</style>

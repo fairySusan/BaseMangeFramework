@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import {ref, watch} from 'vue'
 const props = withDefaults(defineProps<{
+  modelValue: boolean,
   // 弹窗的属性
-  title?: string,
-  width?: string,
+  title?: string, // 弹窗标题
+  width?: string, // 弹窗宽度
   //按钮的属性
   type?: 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'text',
   plain?: boolean,
@@ -20,20 +21,20 @@ const props = withDefaults(defineProps<{
 })
 
 const emit = defineEmits<{
-   (event: 'update:modelValue', visible: boolean): void
+  (event: 'update:modelValue', visible: boolean): void
 }>()
 
 const visible = ref(false)
 
-const showDialog = () => {
-  emit('update:modelValue', true)
-}
+watch(() => props.modelValue, () => {
+  visible.value = props.modelValue
+})
 </script>
 
 <template>
   <el-button
     :class="type==='text' && 'tableActionBtn'"
-    @click="visible = true"
+    @click="emit('update:modelValue', true)"
     :type="type"
     :plain="plain"
     :round="round"
@@ -51,12 +52,13 @@ const showDialog = () => {
     :title="title"
     :width="width"
     center
+    @close="emit('update:modelValue', false)"
   >
     <slot name="content"></slot>
-    <template #footer>
-      <el-button style="width: 100px;" :auto-insert-space="true" @click="visible=false">取消</el-button>
-      <el-button style="width: 100px;" type="primary" :auto-insert-space="true">提交</el-button>
-    </template>
+    <!-- <template #footer>
+      <el-button style="width: 100px;" auto-insert-space @click="emit('update:modelValue', false)">取消</el-button>
+      <el-button style="width: 100px;" type="primary" auto-insert-space>提交</el-button>
+    </template> -->
   </el-dialog>
 </template>
 

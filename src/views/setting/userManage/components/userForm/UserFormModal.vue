@@ -4,7 +4,7 @@ import {VRoleSelect} from '@/components'
 import { userFormRules,UserFormI } from '../../Type'
 import { UserManageItemI,ModifyUserInfoParamsI, AddUserInfoParamsI } from '@/https/userManage/Type'
 import { useFormSubmit } from '@/mixins/Hooks'
-import {changeUserInfo} from '@/https/userManage/UserManage'
+import {addUserInfo, changeUserInfo} from '@/https/userManage/UserManage'
 
 const props = defineProps<{
   modelValue: boolean,
@@ -32,7 +32,8 @@ const formData = reactive<UserFormI>({
   roleIds: []
 })
 
-const {loading, submit} = useFormSubmit<boolean, ModifyUserInfoParamsI | AddUserInfoParamsI>(changeUserInfo)
+const {loading, submit:editUserSubmit} = useFormSubmit<boolean, ModifyUserInfoParamsI>(changeUserInfo)
+const {submit: addUserSubmit} = useFormSubmit<boolean, AddUserInfoParamsI>(addUserInfo)
 
 watch(() => props.modelValue, () => {
   visible.value = props.modelValue
@@ -75,9 +76,9 @@ const onSubmit = () => {
     if (valid) {
       try {
         if (props.isEdit) {
-          await submit(formData as ModifyUserInfoParamsI)
+          await editUserSubmit(formData as ModifyUserInfoParamsI)
         } else {
-          await submit(formData as AddUserInfoParamsI)
+          await addUserSubmit(formData as AddUserInfoParamsI)
         }
         onClose()
         emit('refresh')
@@ -146,9 +147,4 @@ const onSubmit = () => {
 </template>
 
 <style lang="scss" scoped>
-.btnGroup {
-  display: flex;
-  justify-content: center;
-  margin-top: 40px;
-}
 </style>

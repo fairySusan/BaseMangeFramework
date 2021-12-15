@@ -4,6 +4,9 @@ import {ref, reactive, watch} from 'vue'
 import {MenuFormI, menuFormRules} from '../Type'
 import {changeMenuItem} from "@/https/menu/Menu"
 import {ChangeMenuParamI,MenuItemI} from  "@/https/menu/Type"
+import {BaseModalButton} from "@/componentsui"
+import {VELIconForm} from '@/components'
+
 const props = defineProps<{ 
   isEdit: boolean,
   modelValue: boolean,
@@ -15,6 +18,7 @@ const emit = defineEmits<{
   (event: 'update:isEdit', isEdit:boolean): void
 }>()
 const visible = ref(false)
+const iconModalVisible = ref(false)
 const menuForm = ref<any>(null)
 const formData = reactive<MenuFormI>({
   id: null,
@@ -58,6 +62,11 @@ const resetForm = () => {
   formData.url = ''
 }
 
+const onSelectIcon = (iconName: string) => {
+  formData.icon = iconName
+  iconModalVisible.value = false
+}
+
 </script>
 
 <template>
@@ -77,7 +86,19 @@ const resetForm = () => {
         <el-input v-model="formData.url"></el-input>
       </el-form-item>
       <el-form-item prop="url" label="图标">
-        <el-button type="text">选择</el-button>
+        <el-icon size="24px" class="selectIcon">
+          <component :is="formData.icon"></component>
+        </el-icon>
+        <BaseModalButton
+          v-model="iconModalVisible"
+          title="选择图标"
+          type="text"
+        >
+          {{formData.icon ? '重新选择' :'选择'}}
+          <template #content>
+            <VELIconForm @select="onSelectIcon"></VELIconForm>
+          </template>
+        </BaseModalButton>
       </el-form-item>
     </el-form>
     <template #footer>
@@ -101,4 +122,9 @@ const resetForm = () => {
   </el-dialog>
 </template>
 
-<style lang="scss" scoped></style>
+<style lang="scss" scoped>
+.selectIcon {
+  @extend .verticalAlignMid;
+  margin-right: 10px;
+}
+</style>
