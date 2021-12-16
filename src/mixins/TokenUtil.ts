@@ -37,6 +37,7 @@ export class TokenHandler {
                 }
             }).catch((fail) => {
               reject(fail)
+              router.replace('/login')
             })
         })
     }

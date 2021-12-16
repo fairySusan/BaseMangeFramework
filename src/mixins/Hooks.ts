@@ -1,6 +1,6 @@
 import { BaseTableResponse, BaseResponse,initTableData} from './Interface';
 import { onMounted, Ref, ref } from "vue"
-import { ElMessage, ElLoading  } from 'element-plus'
+import { ElMessage  } from 'element-plus'
 import { GetRsaPublicKey } from '@/https/login/Login';
 import JSEncrypt from 'jsencrypt/bin/jsencrypt.min.js';
 
@@ -23,6 +23,7 @@ export function useRequest<T = any>(requestFun: RequestService<T>, initData: any
       loading.value = false
     }
   }
+
 
   onMounted(() => {
     run()
@@ -54,6 +55,7 @@ export function useTableRequest<T = any>(requestFun: RequestTableService<T>, par
     } catch(e:any) {
       data.value = initTableData
       loading.value = false
+      console.log('tbale 401', data.value)
     }
   }
 
