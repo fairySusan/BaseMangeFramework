@@ -52,3 +52,47 @@ $backgroundColor: rgb(240, 240, 240);
 		display: none;
 	}
 }
+
+@mixin mediaWidth(
+	$defaultWidth,
+	$_1100width: $defaultWidth,
+	$_1400width: $defaultWidth,
+	$_1600width: $defaultWidth,
+	$_1980width: $defaultWidth
+) {
+	width: $defaultWidth;
+	@media screen and (max-width: 1100px) {
+		width: $_1100width
+	}
+	@media screen and (max-width: 1400px) {
+		width: $_1400width
+	}
+	@media screen and (max-width: 1600px) {
+		width: $_1600width
+	}
+	@media screen and (max-width: 1980px) {
+		width: $_1980width
+	}
+}
+
+@mixin mediaHeight(
+	$defaultheight, 
+	$_600height: $defaultheight,
+	$_780height: $defaultheight,
+	$_850height: $defaultheight,
+	$_960height: $defaultheight
+) {
+	height: $defaultheight;
+	@media screen and (max-height: 600px) {
+		height: $_600height
+	}
+	@media screen and (max-height: 780px) {
+		height: $_780height
+	}
+	@media screen and (max-height: 850px) {
+		height: $_850height
+	}
+	@media screen and (max-height: 960px) {
+		height: $_960height
+	}
+}

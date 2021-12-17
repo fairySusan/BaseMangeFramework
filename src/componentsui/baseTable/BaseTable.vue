@@ -12,6 +12,8 @@ const {data, loading, getList,onCurrentChange,onSizeChange} = useTableRequest<Us
 ></BaseTable>
  */
 import { BaseTableResponse } from '@/mixins/Interface';
+import { useStore } from '@/store';
+import {PageSizeOptions} from '@/store/modules/common/Type'
 
 defineProps<{
   data: BaseTableResponse<any>,
@@ -22,6 +24,8 @@ const emit  = defineEmits<{
   (event: 'currentChange', pageIndex:number): void,
   (event: 'sizeChange', pageSize: number): void
 }>()
+
+const store = useStore()
 </script>
 
 <template>
@@ -38,9 +42,9 @@ const emit  = defineEmits<{
       <el-pagination
         background
         layout="sizes, prev, pager, next"
-        :page-sizes="[10, 15, 20, 25]"
-        :page-size="10"
-        :total="data.totalCount"
+        :page-sizes="PageSizeOptions"
+        :default-page-size="store.state.common.defaultPageSize"
+        :page-count="data.totalCount"
         @size-change="(pageSize: number) => emit('sizeChange', pageSize)"
         @current-change="(pageIndex: number) => emit('currentChange', pageIndex)"
       ></el-pagination>
@@ -51,6 +55,9 @@ const emit  = defineEmits<{
 <style lang="scss" scoped>
 :deep(.el-table--scrollable-x .el-table__body-wrapper){
   @include scrollBarStyle;
+}
+:deep(.el-table--medium .el-table__cell) {
+  padding: 5px 0;
 }
 .pagination {
   display: flex;

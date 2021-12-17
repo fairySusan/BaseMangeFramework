@@ -1,3 +1,4 @@
+import { useStore } from '@/store';
 import { BaseTableResponse, BaseResponse,initTableData} from './Interface';
 import { onMounted, Ref, ref } from "vue"
 import { ElMessage  } from 'element-plus'
@@ -43,11 +44,14 @@ export function useRequest<T = any>(requestFun: RequestService<T>, initData: any
 type RequestTableService<R = any, P extends any[] = any> = (...args: P) => Promise<BaseResponse<BaseTableResponse<R>>>;
 
 export function useTableRequest<T = any>(requestFun: RequestTableService<T>, params?: any, ) {
+  const store = useStore()
   const data: Ref<BaseTableResponse<T>> = ref(initTableData)
   let loading = ref(false)
+  let pageSize = ref(0)
 
   const getList = async () => {
     loading.value = true
+    params.PageSize = pageSize.value
     try {
       const res: BaseResponse<BaseTableResponse<T>> = await requestFun(params)
       data.value = res.data
@@ -55,7 +59,6 @@ export function useTableRequest<T = any>(requestFun: RequestTableService<T>, par
     } catch(e:any) {
       data.value = initTableData
       loading.value = false
-      console.log('tbale 401', data.value)
     }
   }
 
@@ -65,12 +68,13 @@ export function useTableRequest<T = any>(requestFun: RequestTableService<T>, par
     getList()
   }
 
-  const onSizeChange = (pageSize:number) => {
-    params.PageSize = pageSize
+  const onSizeChange = (_pageSize:number) => {
+    pageSize.value = _pageSize
     getList()
   }
 
   onMounted(() => {
+    pageSize.value = store.state.common.defaultPageSize
     getList()
   })
 

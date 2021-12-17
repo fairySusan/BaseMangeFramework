@@ -1,10 +1,9 @@
+import { BaseResponse } from './Interface';
 import ToolUtil from '@/mixins/ToolUtil';
 import { TokenHandler } from './TokenUtil';
-import axios, { AxiosRequestConfig } from 'axios'
+import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
 import mainDomainName from '@/config/http.config'
 import { ElMessage } from 'element-plus';
-import { BaseResponse } from './Interface';
-import { JsonWebTokenI } from '@/https/login/Type';
 
 let requestFunctionQueue:Function[] = []; // 当前要排队执行的函数队列列表
 
@@ -38,13 +37,19 @@ _axios.interceptors.response.use((response) => {
         ToolUtil.deferCall(freshRequestQueue)
       }
       requestFunctionQueue.push(() => {
-        _axios.request(errResponse.config).then((response: AxiosRequestConfig) => {
-          // 状态码为2xx的情况
-          normalStatusHandle(response, resolve, reject)
+        _axios.request(errResponse.config).then((response) => {
+          resolve(response)
+        }, (err) => {
+          reject(err)
         })
       })
     })
   } else {
+    ElMessage({
+      message: errResponse.data.message,
+      grouping: true,
+      type: 'error',
+    })
     return Promise.reject({
       success: false,
       code: 0,

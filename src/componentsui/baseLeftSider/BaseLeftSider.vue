@@ -6,18 +6,13 @@ import { GetCureentUserMenus } from '@/https/menu/Menu'
 import { MenuItemI } from '@/https/menu/Type'
 
 const {data: menus} = useRequest<MenuItemI[]>(GetCureentUserMenus,[])
-
-const onClickMenu = (index: number, indexPath: string, item:MenuItemI, routeResult: any) => {
-  console.log(item)
-}
-
 </script>
 
 <template>
   <el-aside width="200px">
     <div class="title">This is Title</div>
     <el-scrollbar>
-      <el-menu @select="onClickMenu" :router="true">
+      <el-menu :router="true">
         <template v-for="menu in menus" :key="menu.name">
           <SubMenu v-if="menu.children.length>0" :menuItem="menu"></SubMenu>
           <el-menu-item v-else :index="menu.id" :route="{path:menu.url}">
