@@ -20,6 +20,7 @@ const emit = defineEmits<{
 
 const visible = ref(false)
 const userform = ref<any>(null)
+const loading = ref(false)
 
 const formData = reactive<UserFormI>({
   account: '',
@@ -32,7 +33,7 @@ const formData = reactive<UserFormI>({
   roleIds: []
 })
 
-const {loading, submit:editUserSubmit} = useFormSubmit<boolean, ModifyUserInfoParamsI>(changeUserInfo)
+const {submit:editUserSubmit} = useFormSubmit<boolean, ModifyUserInfoParamsI>(changeUserInfo)
 const {submit: addUserSubmit} = useFormSubmit<boolean, AddUserInfoParamsI>(addUserInfo)
 
 watch(() => props.modelValue, () => {
@@ -75,6 +76,7 @@ const onSubmit = () => {
   userform.value.validate(async (valid: boolean) => {
     if (valid) {
       try {
+        loading.value = true
         if (props.isEdit) {
           await editUserSubmit(formData as ModifyUserInfoParamsI)
         } else {
@@ -83,6 +85,7 @@ const onSubmit = () => {
         onClose()
         emit('refresh')
       } catch(e) {}
+      loading.value = false
     }
   })
 }

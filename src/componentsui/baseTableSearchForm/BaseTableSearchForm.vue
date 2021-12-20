@@ -19,9 +19,11 @@ withDefaults(
   defineProps<{
     model: { [key: string]: any };
     labelWidth?: string | number;
+    isExpand?: boolean;
   }>(),
   {
     labelWidth: "100px",
+    isExpand: false
   }
 );
 
@@ -31,21 +33,20 @@ const emit = defineEmits<{
 }>();
 
 const isExpendMore = ref(false);
-const slots = useSlots()
 </script>
 
 <template>
   <div class="baseTableSearchForm">
-    <el-form :model="model" :inline="true" :label-width="labelWidth">
+    <el-form
+      :style="isExpendMore?`max-height: 100px;`:`max-height: 43px;`"
+      :model="model"
+      :inline="true"
+      :label-width="labelWidth"
+    >
       <slot></slot>
-      <el-collapse-transition>
-        <div v-show="isExpendMore">
-          <slot name="more"></slot>
-        </div>
-      </el-collapse-transition>
     </el-form>
     <div class="options">
-      <el-button v-if="slots.more" type="text" @click="isExpendMore = !isExpendMore">
+      <el-button v-if="isExpand" type="text" @click="isExpendMore = !isExpendMore">
         {{isExpendMore ? "收起↑" : "展开更多筛选↓"}}
       </el-button>
       <el-button type="primary" @click="emit('search')">查询</el-button>
@@ -60,6 +61,10 @@ const slots = useSlots()
   background-color: white;
   margin-bottom: 10px;
   padding: 10px 0;
+  .el-form {
+    overflow-y: hidden;
+    transition: max-height 0.5s ease;
+  }
   .el-form-item--small.el-form-item {
     margin-bottom: 10px;
   }

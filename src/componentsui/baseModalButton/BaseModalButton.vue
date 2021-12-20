@@ -12,13 +12,14 @@
 #default: 自定义按钮
 #content: 自定义弹窗的内容
 */
-import {ref, watch} from 'vue'
+import {ref, useSlots, watch} from 'vue'
 const props = withDefaults(defineProps<{
   modelValue: boolean,
   // 弹窗的属性，参照element plus的dialog组件属性
   title?: string, // 弹窗标题
   width?: string, // 弹窗宽度
   //按钮的属性，参照element plus的button组件属性
+  needButton?: boolean, // 是否需要按钮
   type?: 'primary' | 'success' | 'warning' | 'danger' | 'info' | 'text',
   plain?: boolean,
   round?: boolean,
@@ -28,13 +29,18 @@ const props = withDefaults(defineProps<{
   icon?: string,
   autoInsertSpace?: boolean
 }>(), {
+  needButton: true,
   title: '新增',
   width: '50vw',
   type: 'primary'
 })
 
+const slots = useSlots()
+
 const emit = defineEmits<{
-  (event: 'update:modelValue', visible: boolean): void
+  (event: 'update:modelValue', visible: boolean): void,
+  (event: 'confirm'): void,
+  (event: 'cancel'): void
 }>()
 
 const visible = ref(false)
@@ -42,10 +48,16 @@ const visible = ref(false)
 watch(() => props.modelValue, () => {
   visible.value = props.modelValue
 })
+
+const onCancel = () => {
+  emit('cancel')
+  emit('update:modelValue', false)
+}
 </script>
 
 <template>
   <el-button
+    v-if="needButton"
     @click="emit('update:modelValue', true)"
     :type="type"
     :plain="plain"
@@ -67,6 +79,23 @@ watch(() => props.modelValue, () => {
     @close="emit('update:modelValue', false)"
   >
     <slot name="content"></slot>
+    <template #footer>
+      <el-button
+        style="width: 100px;"
+        :auto-insert-space="true"
+        @click="onCancel"
+      >
+        取消
+      </el-button>
+      <el-button
+        style="width: 100px;"
+        type="primary"
+        :auto-insert-space="true"
+        @click="emit('confirm')"
+      >
+        提交
+      </el-button>
+    </template>
   </el-dialog>
 </template>
 

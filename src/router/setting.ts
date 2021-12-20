@@ -1,6 +1,8 @@
 const Personal = () => import("@/views/setting/personal/Personal.vue")
 const UserManage = () => import("@/views/setting/userManage/UserManage.vue")
 const MenuManage = () => import("@/views/setting/menuMange/MenuManage.vue")
+const RoleManage = () => import("@/views/setting/roleManage/RoleManage.vue")
+
 export const settingRouters = [
   {
     path: '/personal',
@@ -25,5 +27,13 @@ export const settingRouters = [
       name: '菜单管理'
     },
     component: MenuManage
+  },
+  {
+    path: '/setting/roleSetting',
+    name: 'roleManage',
+    meta: {
+      name: '角色管理'
+    },
+    component: RoleManage
   }
 ]

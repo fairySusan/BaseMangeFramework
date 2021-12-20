@@ -15,10 +15,14 @@ export const mediaHeightAdpter = [
   },
   {
     device: matchMedia('(max-height:850px)'),
-    pageSize: PageSizeOptions[2]
+    pageSize: PageSizeOptions[1]
   },
   {
     device: matchMedia('(max-height:960px)'),
+    pageSize: PageSizeOptions[2]
+  },
+  {
+    device: matchMedia('(min-height:960px)'),
     pageSize: PageSizeOptions[2]
   },
 ]

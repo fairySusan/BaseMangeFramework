@@ -84,7 +84,7 @@ watch(() => props.modelValue, () => {
   <slot name="content"></slot>
   <template #footer>
     <el-button @click="emit('update:modelValue', false)">取消</el-button>
-    <el-button type="primary" @click="emit('confirm')">确认</el-button>
+    <el-button type="danger" @click="emit('confirm')">确认</el-button>
   </template>
 </el-dialog>
 </template>

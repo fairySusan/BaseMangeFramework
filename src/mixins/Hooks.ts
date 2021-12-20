@@ -100,6 +100,7 @@ interface MessageI {
   loading?: string | false
 }
 
+//T：接口返回数据的类型， P：提交的参数的类型
 export function useFormSubmit<T, P>(submitFun: any, message?: MessageI | false) {
   let loading = ref(false)
 

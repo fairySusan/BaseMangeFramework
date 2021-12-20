@@ -57,7 +57,7 @@ const store = useStore()
   @include scrollBarStyle;
 }
 :deep(.el-table--medium .el-table__cell) {
-  padding: 5px 0;
+  padding: 8px 0;
 }
 .pagination {
   display: flex;

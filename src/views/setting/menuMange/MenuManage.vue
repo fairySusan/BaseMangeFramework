@@ -27,6 +27,18 @@ const onClickEdit = (item: MenuItemI) => {
   isEdit.value = true
   menuModalVisible.value = true
 }
+
+const allowDrop = (draggingNode: any, dropNode: any, type: any) => {
+  return true
+}
+
+const allowDrag = (draggingNode: any) => {
+  return true
+}
+const handleDragEnd = (draggingNode: any, dropNode: any, dropType: any, ev:any) => {
+  console.log('tree drag end: ', dropNode && dropNode.label, dropType)
+}
+
 </script>
 
 <template>
@@ -41,8 +53,13 @@ const onClickEdit = (item: MenuItemI) => {
           node-key="id"
           :props="{
             label: 'name',
+            children: 'children',
           }"
+          :draggable="true"
+          :allow-drop="allowDrop"
+          :allow-drag="allowDrag"
           @node-click="onNodeClick"
+          @node-drag-end="handleDragEnd"
         >
         </el-tree>
       </el-aside>

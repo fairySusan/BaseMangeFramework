@@ -5,7 +5,7 @@
  */
 import {ref} from 'vue'
 import { useRequest } from '@/mixins/Hooks';
-import {GetAllRolesList} from '@/https/roles/Roles'
+import {getAllRolesList} from '@/https/roles/Roles'
 import { RolesItemI } from '@/https/roles/Type';
 defineProps<{
   modelValue: any[]
@@ -16,7 +16,7 @@ const emit = defineEmits<{
 }>()
 
 const selectRoleIds = ref<number[]>([])
-const {data, loading} = useRequest<RolesItemI[]>(GetAllRolesList, [])
+const {data, loading} = useRequest<RolesItemI[]>(getAllRolesList, [])
 
 const onChange = (ids: number[]) => {
   selectRoleIds.value = ids;
