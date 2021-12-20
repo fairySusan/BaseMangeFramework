@@ -84,7 +84,7 @@ const submitHandle = () => {
           </el-row>
         </el-form-item>
         <el-form-item>
-          <el-button @click="submitHandle" :loading="btnLoading" style="width: 100%;">登录</el-button>
+          <el-button type="primary" size="medium" @click="submitHandle" :loading="btnLoading" style="width: 100%;">登录</el-button>
         </el-form-item>
       </el-form>
     </div>
@@ -92,4 +92,20 @@ const submitHandle = () => {
 </template>
 
 
-<style lang="scss" scoped src="./Login.scss"></style>
+<style lang="scss" scoped>
+.loginPage {
+  height: 100vh;
+  background: #475164 url("@/assets/images/texture.png");
+}
+.loginContent {
+  margin-top: 10%;
+  width: 30vw;
+  padding: 10px;
+}
+:deep(.el-form-item label) {
+  color: white;
+}
+.validateImage {
+  
+}
+</style>
