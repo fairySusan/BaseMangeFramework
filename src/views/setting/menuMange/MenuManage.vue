@@ -6,13 +6,13 @@ import { MenuItemI } from '@/https/menu/Type';
 import MenuFormModal from './components/MenuFormModal.vue';
 import {BaseConfirmPopButton} from '@/componentsui'
 import { MenuFormI } from './Type';
-import BaseConfirmButton from '../../../componentsui/baseConfirmButton/BaseConfirmButton.vue';
 
 const {data} = useRequest<MenuItemI[]>(getAllMenuList, [])
 const currTable = ref<MenuItemI[]>([])
 const currItem = ref<MenuItemI | null>(null)
 const menuModalVisible = ref(false)
 const isEdit = ref(false)
+const deletePopVisible = ref(false)
 
 watch(() => data.value, () => {
   currTable.value = [data.value[0]]
@@ -64,7 +64,7 @@ const onClickEdit = (item: MenuItemI) => {
           <el-table-column prop="action" label="操作">
             <template #default="{row}">
               <el-button type="text" class="tableActionBtn" @click="onClickEdit(row)">编辑</el-button>
-              <el-button type="text" class="tableActionBtn">删除</el-button>
+              <BaseConfirmPopButton v-model="deletePopVisible"  type="text" class="tableActionBtn">删除</BaseConfirmPopButton>
             </template>
           </el-table-column>
         </el-table>

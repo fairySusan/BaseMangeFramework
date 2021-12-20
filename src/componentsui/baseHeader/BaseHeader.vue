@@ -1,11 +1,9 @@
 <script setup lang="ts">
-import {computed} from 'vue'
 import userPoto from '@/assets/images/head-girl.png'
 import { useStore } from '@/store';
-import { UserInfoHandler } from '@/mixins/UserUtil';
 
 const store = useStore()
-const userInfo = UserInfoHandler.getUserInfo()
+const userInfo = store.state.user.userInfo
 
 </script>
 
@@ -16,7 +14,7 @@ const userInfo = UserInfoHandler.getUserInfo()
       <div class="flexRowAlignItemCenter">
         <el-avatar :src="userPoto" class="marginRight"></el-avatar>
         <el-dropdown>
-          <span>
+          <span class="whiteFontColor">
             {{userInfo?.name}}({{userInfo?.account}})
             <el-icon class="verticalAlignMid">
               <arrow-down />

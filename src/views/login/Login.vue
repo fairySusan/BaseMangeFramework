@@ -6,7 +6,6 @@ import {useFormSubmit, useRequest } from '@/mixins/Hooks';
 import {VertifyCodeI, LoginResponseI, LoginParamsI} from '@/https/login/Type'
 import { useRouter } from 'vue-router';
 import { TokenHandler } from '@/mixins/TokenUtil';
-import { UserInfoHandler } from '@/mixins/UserUtil';
 import { useStore } from '@/store';
 
 const form = reactive({

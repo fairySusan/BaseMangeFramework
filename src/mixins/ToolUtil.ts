@@ -1,4 +1,4 @@
-import { UserInfoHandler } from "./UserUtil";
+import store from '@/store';
 
 export default class ToolUtil {
   /**判断是否为空对象 */
@@ -115,7 +115,7 @@ export default class ToolUtil {
         callback(new Error('密码长度在8到20位'));
     }else if (value.toLowerCase().indexOf('hx')!=-1) {
         callback(new Error('不能使用 hx 作为密码'));
-    } else if (value.toLowerCase().indexOf(UserInfoHandler.getUserInfo()?.account as string) !== -1) {
+    } else if (value.toLowerCase().indexOf(store.state.user.userInfo?.account as string) !== -1) {
         callback(new Error('不能使用姓名拼音作为密码'));
     } else if (ToolUtil.isKeyBoardContinuousChar(value)) {
         callback(new Error("键盘连续字符不能超过 3 个"))

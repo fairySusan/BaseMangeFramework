@@ -1,10 +1,10 @@
 <script setup lang="ts">
-import { UserInfoHandler } from '@/mixins/UserUtil';
 import {onMounted, reactive,ref} from 'vue'
 import {useFormSubmit } from '@/mixins/Hooks';
 import {rules} from './Type'
 import {RegisterUserInfoResultI,ChangeUserInfoParamI} from '@/https/login/Type'
 import {ChangeUserInfo} from '@/https/login/Login'
+import { useStore } from '@/store';
 
 const formData = reactive({
   name: '',
@@ -14,6 +14,7 @@ const formData = reactive({
   eMail: ''
 })
 const personalForm = ref<any>(null)
+const store = useStore()
 
 onMounted(() => {
  getFormInfo()
@@ -23,7 +24,7 @@ onMounted(() => {
 const {submit: submitFun, loading: btnLoading} = useFormSubmit<RegisterUserInfoResultI, ChangeUserInfoParamI>(ChangeUserInfo)
 
 const getFormInfo = () => {
-  const userInfo = UserInfoHandler.getUserInfo()
+  const userInfo = store.state.user.userInfo
   if (userInfo) {
     formData.name = userInfo.name
     formData.nickName = userInfo.nickName
