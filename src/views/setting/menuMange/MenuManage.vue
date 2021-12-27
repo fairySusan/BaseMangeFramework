@@ -1,13 +1,13 @@
 <script setup lang="ts">
-import { computed, ref, watch } from 'vue'
-import { useRequest } from '@/mixins/Hooks';
-import {getAllMenuList} from '@/https/menu/Menu'
-import { MenuItemI } from '@/https/menu/Type';
+import { ref, watch } from 'vue'
+import { useRequest,useOptionRequest } from '@/mixins/Hooks';
+import {getAllMenuList,changeMenuItem, deleteMenuItem} from '@/https/setting/menu/Menu'
+import { MenuItemI } from '@/https/setting/menu/Type';
 import MenuFormModal from './components/MenuFormModal.vue';
 import {BaseConfirmPopButton} from '@/componentsui'
-import { MenuFormI } from './Type';
 
-const {data} = useRequest<MenuItemI[]>(getAllMenuList, [])
+const {data, run: getList, loading} = useRequest<MenuItemI[]>(getAllMenuList, [])
+const {submit: deleteSubmit} = useOptionRequest<string, {id:number}>(deleteMenuItem)
 const currTable = ref<MenuItemI[]>([])
 const currItem = ref<MenuItemI | null>(null)
 const menuModalVisible = ref(false)
@@ -35,10 +35,28 @@ const allowDrop = (draggingNode: any, dropNode: any, type: any) => {
 const allowDrag = (draggingNode: any) => {
   return true
 }
-const handleDragEnd = (draggingNode: any, dropNode: any, dropType: any, ev:any) => {
-  console.log('tree drag end: ', dropNode && dropNode.label, dropType)
+const handleDragEnd = async (draggingNode: any, dropNode: any, dropType: any, ev:any) => {
+  const dragMenu = draggingNode.data
+  if (dropType === 'before') {
+    dragMenu.parentId = dropNode.data.parentId
+    dragMenu.indexOrder = dropNode.data.indexOrder
+  } else if (dropType === 'after') {
+    dragMenu.parentId = dropNode.data.parentId
+    dragMenu.indexOrder = dropNode.data.indexOrder
+  } else if (dropType === 'inner') {
+    dragMenu.parentId = dropNode.data.id
+    dragMenu.indexOrder = 0
+  }
+  await changeMenuItem(dragMenu)
+  getList()
 }
 
+const onDelete = async (id: number) => {
+  try {
+    await deleteSubmit({id})
+    getList()
+  } catch(e){}
+}
 </script>
 
 <template>
@@ -47,7 +65,7 @@ const handleDragEnd = (draggingNode: any, dropNode: any, dropType: any, ev:any) 
       <el-button style="width:100px" type="primary" @click="menuModalVisible = true; isEdit=false">新增菜单</el-button>
     </div>
     <el-container class="menuMainContainer" direction="horizontal">
-      <el-aside>
+      <el-aside v-loading="loading">
         <el-tree
           :data="data"
           node-key="id"
@@ -59,8 +77,17 @@ const handleDragEnd = (draggingNode: any, dropNode: any, dropType: any, ev:any) 
           :allow-drop="allowDrop"
           :allow-drag="allowDrag"
           @node-click="onNodeClick"
-          @node-drag-end="handleDragEnd"
+          @node-drop="handleDragEnd"
+          highlight-current
         >
+          <template #default="{node}">
+            <span class="fontSizeBase">
+              <el-icon size="16px">
+                <component :is="node.data.icon"></component>
+              </el-icon>
+              {{node.data.name}}
+            </span>
+          </template>
         </el-tree>
       </el-aside>
       <el-main>
@@ -72,7 +99,7 @@ const handleDragEnd = (draggingNode: any, dropNode: any, dropType: any, ev:any) 
           <el-table-column prop="name" label="名称"></el-table-column>
           <el-table-column prop="icon" label="图标">
             <template #default="{row}">
-              <el-icon>
+              <el-icon size="16px">
                 <component :is="row.icon"></component>
               </el-icon>
             </template>
@@ -81,7 +108,14 @@ const handleDragEnd = (draggingNode: any, dropNode: any, dropType: any, ev:any) 
           <el-table-column prop="action" label="操作">
             <template #default="{row}">
               <el-button type="text" class="tableActionBtn" @click="onClickEdit(row)">编辑</el-button>
-              <BaseConfirmPopButton v-model="deletePopVisible"  type="text" class="tableActionBtn">删除</BaseConfirmPopButton>
+              <BaseConfirmPopButton
+                v-model="deletePopVisible"
+                type="text"
+                class="tableActionBtn"
+                @confirm="onDelete(row.id)"
+              >
+                删除
+              </BaseConfirmPopButton>
             </template>
           </el-table-column>
         </el-table>
@@ -91,6 +125,7 @@ const handleDragEnd = (draggingNode: any, dropNode: any, dropType: any, ev:any) 
       v-model="menuModalVisible"
       v-model:isEdit="isEdit"
       :data="currItem"
+      @refresh="getList"
     ></MenuFormModal>
   </el-container>
 </template>

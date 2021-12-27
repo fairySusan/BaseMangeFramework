@@ -1,3 +1,6 @@
+import { MenuItemI } from "../setting/menu/Type";
+import { BasePowerItemI } from "../setting/power/Type";
+
 export interface LoginParamsI {
   account: string; // 账户名
   password: string; // 密码
@@ -77,4 +80,10 @@ export interface ChangeSelfPasswordParamI {
 export interface ChangePasswordAdminI {
   id: number;
   password: string;
+}
+
+export interface UserInitDataResultI {
+  roles: RoleI[];
+	powers: BasePowerItemI[];
+	menus: MenuItemI[]; // 当前用户拥有的菜单
 }

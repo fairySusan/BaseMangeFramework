@@ -18,6 +18,7 @@ export default createStore<RootState>({
       storage:window.localStorage,
       paths: [
         'user.userInfo',
+        'user.authList'
       ]
     }),
     createPersistedState({

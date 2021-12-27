@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {reactive, ref} from 'vue'
-import {BaseTableSearchForm, BaseTable, BaseModalButton, BaseConfirmPopButton, BaseConfirmButton} from '@/componentsui'
+import {BaseTableSearchForm, BaseTable, BaseConfirmButton} from '@/componentsui'
 import { useFormSubmit, useTableRequest } from '@/mixins/Hooks'
-import {getAllUsers, changeUserIsLocked} from '@/https/userManage/UserManage'
-import {UserManageItemI} from '@/https/userManage/Type'
+import {getAllUsers, changeUserIsLocked} from '@/https/setting/userManage/UserManage'
+import {UserManageItemI} from '@/https/setting/userManage/Type'
 import {SexEnum} from './Type'
 import ToolUtil from '@/mixins/ToolUtil'
 import UserFormModal from './components/userForm/UserFormModal.vue'

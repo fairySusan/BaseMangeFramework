@@ -1,11 +1,10 @@
 <script setup lang="ts">
-import {reactive,ref, onMounted} from 'vue'
+import {reactive,ref} from 'vue'
 import { useRequest } from '@/mixins/Hooks';
-import {getAllRolesList} from '@/https/roles/Roles'
-import {RolesItemI} from '@/https/roles/Type'
-import {BaseTableSearchForm, BaseConfirmButton} from '@/componentsui'
+import {getAllRolesList} from '@/https/setting/roles/Roles'
+import {RolesItemI} from '@/https/setting/roles/Type'
+import {BaseTableSearchForm, BaseConfirmButton, BaseModalButton} from '@/componentsui'
 import RoleForm from './component/RoleForm.vue'
-import BaseModalButton from '../../../componentsui/baseModalButton/BaseModalButton.vue'
 
 const queryData = reactive({
   Name: ''

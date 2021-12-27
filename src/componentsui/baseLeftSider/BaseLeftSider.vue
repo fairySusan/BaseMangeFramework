@@ -2,17 +2,28 @@
 <script setup lang="ts">
 import SubMenu from './subMenu/SubMenu.vue';
 import { useRequest } from '@/mixins/Hooks';
-import { GetCureentUserMenus } from '@/https/menu/Menu'
-import { MenuItemI } from '@/https/menu/Type'
+import { GetCureentUserMenus } from '@/https/setting/menu/Menu'
+import { MenuItemI } from '@/https/setting/menu/Type'
+import { UserInitDataResultI } from '@/https/login/Type';
+import { InitUserData } from '@/https/login/Login';
+import store from '@/store';
+import { onMounted } from 'vue';
 
 const {data: menus} = useRequest<MenuItemI[]>(GetCureentUserMenus,[])
+const {data:userInitData, run:getUserInitData} = useRequest<UserInitDataResultI>(InitUserData, null, undefined, false)
+
+onMounted(() => {
+  getUserInitData().then(() => {
+    store.commit('user/setUserAuthList',userInitData.value.powers)
+  })
+})
 </script>
 
 <template>
   <el-aside width="200px">
     <div class="title">This is Title</div>
     <el-scrollbar>
-      <el-menu :router="true">
+      <el-menu router>
         <template v-for="menu in menus" :key="menu.name">
           <SubMenu v-if="menu.children.length>0" :menuItem="menu"></SubMenu>
           <el-menu-item v-else :index="menu.id" :route="{path:menu.url}">

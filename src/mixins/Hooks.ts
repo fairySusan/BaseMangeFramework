@@ -9,7 +9,7 @@ import JSEncrypt from 'jsencrypt/bin/jsencrypt.min.js';
 type RequestService<R = any, P extends any[] = any> = (...args: P) => Promise<BaseResponse<R>>;
 
 // http请求的钩子， 用于onMounted里需要的请求
-export function useRequest<T = any>(requestFun: RequestService<T>, initData: any, params?: any, ) {
+export function useRequest<T = any>(requestFun: RequestService<T>, initData: any, params?: any, immediate = true) {
   const data: Ref<T> = ref(initData)
   let loading = ref(false)
 
@@ -27,7 +27,7 @@ export function useRequest<T = any>(requestFun: RequestService<T>, initData: any
 
 
   onMounted(() => {
-    run()
+    immediate && run()
   })
 
   return {
@@ -134,6 +134,48 @@ export function useFormSubmit<T, P>(submitFun: any, message?: MessageI | false) 
     submit
   }
 }
+
+/*
+*一般操作的钩子: 比如开启，关闭。 封装提交按钮的防抖、提交的loading提示、操作成功/操作失败的提示
+*@param submitFun 操作的方法名
+*@param params 操作的参数
+*@param message 操作过程中的提示 操作成功 操作失败的提示 传false不显示提示
+*/
+//T：接口返回数据的类型， P：提交的参数的类型
+export function useOptionRequest<T, P>(submitFun: any, message?: MessageI | false) {
+  let loading = ref(false)
+
+  const submit = async (params: P) => {
+    loading.value = true
+    try {
+      const res: BaseResponse<T> = await submitFun(params)
+      if (showMessage(message, 'success')) {
+        ElMessage({
+          message: message ? (message?.success || '操作成功!') : '操作成功!' ,
+          type: 'success',
+        })
+      }
+      loading.value = false
+      return Promise.resolve(res)
+    } catch(e: any) {
+      if (showMessage(message, 'error')) {
+        ElMessage({
+          message: message ? (message?.error	 || '操作失败!') : '操作失败!',
+          type: 'error',
+        })
+      }
+      loading.value = false
+      return Promise.reject(e.message)
+    }
+  }
+ 
+
+  return {
+    loading,
+    submit
+  }
+}
+
 
 function showMessage (message: MessageI | false | undefined, type: string) {
   if (message === undefined) {

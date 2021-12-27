@@ -2,9 +2,9 @@
 import {reactive, ref,watch} from 'vue'
 import {VRoleSelect} from '@/components'
 import { userFormRules,UserFormI } from '../../Type'
-import { UserManageItemI,ModifyUserInfoParamsI, AddUserInfoParamsI } from '@/https/userManage/Type'
+import { UserManageItemI,ModifyUserInfoParamsI, AddUserInfoParamsI } from '@/https/setting/userManage/Type'
 import { useFormSubmit } from '@/mixins/Hooks'
-import {addUserInfo, changeUserInfo} from '@/https/userManage/UserManage'
+import {addUserInfo, changeUserInfo} from '@/https/setting/userManage/UserManage'
 
 const props = defineProps<{
   modelValue: boolean,

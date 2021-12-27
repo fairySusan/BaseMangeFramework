@@ -1,6 +1,6 @@
 
 // 权限管理模块 - 权限列表基本的字段
-interface BasePowerItemI{
+export interface BasePowerItemI {
   buttonKey: string; // 按钮key值，及按钮权限的key值
   buttonName: string; // 按钮名称
   menuId:string; // 菜单id

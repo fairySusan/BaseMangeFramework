@@ -2,8 +2,8 @@
 import { useFormSubmit } from '@/mixins/Hooks'
 import {ref, reactive, watch} from 'vue'
 import {MenuFormI, menuFormRules} from '../Type'
-import {changeMenuItem} from "@/https/menu/Menu"
-import {ChangeMenuParamI,MenuItemI} from  "@/https/menu/Type"
+import {addNewMenu, changeMenuItem} from "@/https/setting/menu/Menu"
+import {AddMenuParamI, ChangeMenuParamI,MenuItemI} from  "@/https/setting/menu/Type"
 import {BaseModalButton} from "@/componentsui"
 import {VELIconForm} from '@/components'
 
@@ -15,23 +15,26 @@ const props = defineProps<{
 
 const emit = defineEmits<{
   (event: 'update:modelValue', visible:boolean): void,
-  (event: 'update:isEdit', isEdit:boolean): void
+  (event: 'update:isEdit', isEdit:boolean): void,
+  (event: 'refresh'):void
 }>()
 const visible = ref(false)
 const iconModalVisible = ref(false)
 const menuForm = ref<any>(null)
 const formData = reactive<MenuFormI>({
+  parentId: null,
   id: null,
   name: '',
   icon: '',
   url: ''
 })
 
-const {submit: editSubmit, loading} = useFormSubmit<string, ChangeMenuParamI>(changeMenuItem)
+const {submit: editSubmit, loading:editLoading} = useFormSubmit<string, ChangeMenuParamI>(changeMenuItem)
+const {submit: addSubmit, loading: addLoading} = useFormSubmit<string, AddMenuParamI>(addNewMenu)
 
 const onClose = () => {
   resetForm()
-  emit('update:isEdit', false)
+  emit('update:isEdit', !props.isEdit)
   emit('update:modelValue', false)
 }
 
@@ -41,6 +44,7 @@ watch(() => props.modelValue, () => {
 
 watch(() => props.isEdit, () => {
   if (props.data && props.isEdit) {
+    formData.parentId = props.data.parentId
     formData.id = props.data.id
     formData.name = props.data.name
     formData.icon = props.data.icon
@@ -49,9 +53,14 @@ watch(() => props.isEdit, () => {
 })
 
 const onSubmit = async () => {
-
   try {
-    await editSubmit(formData)
+    if (props.isEdit) {
+      await editSubmit(formData)
+    } else {
+      await addSubmit(formData)
+    }
+    emit('update:modelValue', false)
+    emit('refresh')
   }catch(e) {}
 }
 
@@ -78,7 +87,7 @@ const onSelectIcon = (iconName: string) => {
     center
     @close="emit('update:modelValue', false)"
   >
-    <el-form ref="menuForm" :model="formData" label-width="80px" :rules="menuFormRules">
+    <el-form ref="menuForm" v-loading="editLoading || addLoading" :model="formData" label-width="80px" :rules="menuFormRules">
       <el-form-item prop="name" label="名称">
         <el-input v-model="formData.name"></el-input>
       </el-form-item>
@@ -114,7 +123,7 @@ const onSelectIcon = (iconName: string) => {
         type="primary"
         :auto-insert-space="true"
         @click="onSubmit"
-        :loading="loading"
+        :loading="editLoading || addLoading"
       >
         提交
       </el-button>

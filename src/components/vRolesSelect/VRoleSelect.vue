@@ -5,8 +5,8 @@
  */
 import {ref} from 'vue'
 import { useRequest } from '@/mixins/Hooks';
-import {getAllRolesList} from '@/https/roles/Roles'
-import { RolesItemI } from '@/https/roles/Type';
+import {getAllRolesList} from '@/https/setting/roles/Roles'
+import { RolesItemI } from '@/https/setting/roles/Type';
 defineProps<{
   modelValue: any[]
 }>()

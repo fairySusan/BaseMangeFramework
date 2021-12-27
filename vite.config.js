@@ -37,6 +37,7 @@ export default defineConfig(({ command, mode }) => {
       }),
     ],
     server: {
+      port: 3001,
       proxy: {
         '/devUrl': {
           target: 'http://172.31.40.171:3000',

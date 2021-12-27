@@ -1,9 +1,9 @@
 <script setup lang="ts">
 import {reactive, watch, ref, onMounted} from 'vue'
 import {RoleRules} from '../Type'
-import {RolesItemI} from '@/https/roles/Type'
-import {addNewRole, changeRoles} from '@/https/roles/Roles'
-import {AddRolesParamI, ModifyRolesParamI} from '@/https/roles/Type'
+import {RolesItemI} from '@/https/setting/roles/Type'
+import {addNewRole, changeRoles} from '@/https/setting/roles/Roles'
+import {AddRolesParamI, ModifyRolesParamI} from '@/https/setting/roles/Type'
 import { useFormSubmit } from '@/mixins/Hooks'
 
 const props = defineProps<{

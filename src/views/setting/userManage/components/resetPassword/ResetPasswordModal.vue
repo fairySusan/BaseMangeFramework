@@ -4,7 +4,7 @@ import { reactive, ref, watch } from 'vue'
 import {ChangePasswordAdminI} from '@/https/login/Type'
 import {ChangeUserPasswordAdmin} from '@/https/login/Login'
 import ToolUtil from '@/mixins/ToolUtil'
-import { UserManageItemI } from '@/https/userManage/Type'
+import { UserManageItemI } from '@/https/setting/userManage/Type'
 const props = defineProps<{
   modelValue: boolean,
   data: UserManageItemI | null

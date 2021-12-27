@@ -1,6 +1,6 @@
 import _axios from "@/mixins/HttpUtil";
 import { BaseResponse } from "@/mixins/Interface";
-import { ChangePasswordAdminI, ChangeSelfPasswordParamI, ChangeUserInfoParamI, LoginParamsI, LoginResponseI, RegisterUserInfoResultI, VertifyCodeI } from './Type'
+import { ChangePasswordAdminI, ChangeSelfPasswordParamI, ChangeUserInfoParamI, LoginParamsI, LoginResponseI, RegisterUserInfoResultI, UserInitDataResultI, VertifyCodeI } from './Type'
 
 /**
  * 登录
@@ -46,4 +46,11 @@ export const ChangeUserPasswordAdmin = (params: ChangePasswordAdminI): Promise<B
  */
 export const ChangePasswordByUser = (params: ChangeSelfPasswordParamI): Promise<BaseResponse<string>> => {
   return _axios.post('/api/account/modifypassword', params)
+}
+
+/**
+ * 初始化用户数据
+ */
+ export const InitUserData = (): Promise<BaseResponse<UserInitDataResultI>> => {
+  return _axios.get('/api/users/initdata')
 }
