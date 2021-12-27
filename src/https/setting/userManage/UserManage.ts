@@ -26,8 +26,8 @@ export const addUserInfo = (params: AddUserInfoParamsI): Promise<BaseResponse<bo
 /**
  * 删除用户
  */
-export const deleteUserInfo = (id: number): Promise<BaseResponse<string>> => {
-  return _axios.post('/api/users/' + id)
+export const deleteUserInfo = (params:{id: number}): Promise<BaseResponse<string>> => {
+  return _axios.post('/api/users/' + params.id)
 }
 
 /**

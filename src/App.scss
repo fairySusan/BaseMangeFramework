@@ -48,6 +48,14 @@ body, html {
 	}
 }
 
+a {
+	text-decoration: none;
+	&:link, &:visited,&:hover,&:active  {
+		text-decoration: none;
+		color: map-get($text-color, 'primary')
+	}
+}
+
 
 /*------------fontsize---------*/
 .fontSizeMini {
@@ -233,6 +241,13 @@ body, html {
 .flexRowSpaceAround {
 	display: flex;
 	justify-content: space-around;
+}
+
+
+// 横向-justify-content: flex-end;
+.flexRowFlexEnd {
+	display: flex;
+	justify-content: flex-end;
 }
 
 // 横向-水平居中 center

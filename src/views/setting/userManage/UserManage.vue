@@ -1,8 +1,8 @@
 <script setup lang="ts">
 import {reactive, ref} from 'vue'
-import {BaseTableSearchForm, BaseTable, BaseConfirmButton} from '@/componentsui'
-import { useFormSubmit, useTableRequest } from '@/mixins/Hooks'
-import {getAllUsers, changeUserIsLocked} from '@/https/setting/userManage/UserManage'
+import {BaseTableSearchForm, BaseTable, BaseConfirmButton, BaseConfirmPopButton} from '@/componentsui'
+import { useFormSubmit, useOptionRequest, useTableRequest } from '@/mixins/Hooks'
+import {getAllUsers, changeUserIsLocked,deleteUserInfo} from '@/https/setting/userManage/UserManage'
 import {UserManageItemI} from '@/https/setting/userManage/Type'
 import {SexEnum} from './Type'
 import ToolUtil from '@/mixins/ToolUtil'
@@ -24,10 +24,8 @@ let queryData = reactive({
 })
 
 const {data, loading, getList,onCurrentChange,onSizeChange} = useTableRequest<UserManageItemI[]>(getAllUsers,queryData);
-const {submit: changeLock, loading:lockLoding} = useFormSubmit(changeUserIsLocked, {
-  success: '操作成功！',
-  error: '操作失败！'
-})
+const {submit: changeLock} = useOptionRequest(changeUserIsLocked)
+const {submit: deleteUser} = useOptionRequest<string,{id: number}>(deleteUserInfo)
 
 const reset = () => {
   queryData.StartCreatedTime = ''
@@ -45,6 +43,13 @@ const onClickEdit = (data: UserManageItemI) => {
 
 const onChangeLock = async (isLocked: boolean, id: number) => {
   await changeLock({isLocked, id})
+}
+
+const onDelete = async (id: number) => {
+  try {
+    await deleteUser({id})
+    getList()
+  }catch(e){}
 }
 
 </script>
@@ -114,7 +119,7 @@ const onChangeLock = async (isLocked: boolean, id: number) => {
     <el-table-column prop="phone" label="手机号" width="120" />
     <el-table-column prop="eMail" label="邮箱" width="180" />
     <el-table-column prop="creationTime" label="创建日期" width="180" />
-    <el-table-column prop="action" label="操作" width="180" fixed="right">
+    <el-table-column prop="action" label="操作" width="240" fixed="right">
       <template #default="{row}">
         <el-button
           type="text"
@@ -130,26 +135,17 @@ const onChangeLock = async (isLocked: boolean, id: number) => {
         >
           重置密码
         </el-button>
-          <el-button
+        <BaseConfirmPopButton
+          v-model="confirmDelete"
           type="text"
-          @click="confirmDelete = true"
           class="tableActionBtn"
+          @confirm="onDelete(row.id)"
         >
           删除
-        </el-button>
+        </BaseConfirmPopButton>
       </template>
     </el-table-column>
   </BaseTable>
-
-  <BaseConfirmButton
-    :needButton="false"
-    type="text"
-    v-model="confirmDelete"
-  >
-    <template #content>
-      <div style="text-align: center;">再次确认是否删除该用户？</div>
-    </template>
-  </BaseConfirmButton>
 
   <UserFormModal
     v-model="visibleUserModal"

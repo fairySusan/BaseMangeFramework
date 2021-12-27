@@ -20,10 +20,12 @@ withDefaults(
     model: { [key: string]: any };
     labelWidth?: string | number;
     isExpand?: boolean;
+    isSearchForm?: boolean; // 是否显示“查询” “重置” 按钮
   }>(),
   {
     labelWidth: "100px",
-    isExpand: false
+    isExpand: false,
+    isSearchForm: true
   }
 );
 
@@ -46,11 +48,13 @@ const isExpendMore = ref(false);
       <slot></slot>
     </el-form>
     <div class="options">
-      <el-button v-if="isExpand" type="text" @click="isExpendMore = !isExpendMore">
-        {{isExpendMore ? "收起↑" : "展开更多筛选↓"}}
-      </el-button>
-      <el-button type="primary" @click="emit('search')">查询</el-button>
-      <el-button @click="emit('reset')">重置</el-button>
+      <template v-if="isSearchForm">
+        <el-button v-if="isExpand" type="text" @click="isExpendMore = !isExpendMore">
+          {{isExpendMore ? "收起↑" : "展开更多筛选↓"}}
+        </el-button>
+        <el-button type="primary" @click="emit('search')">查询</el-button>
+        <el-button @click="emit('reset')">重置</el-button>
+      </template>
       <slot name="button"></slot>
     </div>
   </div>

@@ -30,3 +30,16 @@ export interface AddRolesParamI {
  export interface ModifyRolesParamI extends AddRolesParamI{
 	id: number;
 }
+
+export interface AddRoleMenuPowerParamsI {
+	roleId:number,
+	menupowerArr:{
+		menuIds:string[],
+		powerIds:string[]
+	}
+}
+
+export interface ChangeIsLockedParamI {
+	IsLocked: boolean;
+	id: number
+}

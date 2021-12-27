@@ -40,3 +40,11 @@ export const changeMenuItem = (params: ChangeMenuParamI): Promise<BaseResponse<M
 export const deleteMenuItem = (id: string): Promise<BaseResponse<string>> => {
     return _axios.post('/api/menus/del?id=' + id,)
 }
+
+/**
+ * 获取指定角色id的菜单列表
+ * @param roleId 角色id
+ */
+ export const getCureentRolePowerMenu = (params:{roleId:number}): Promise<BaseResponse<MenuItemI[]>> => {
+    return _axios.get('/api/roles/'+ params.roleId + '/powers')
+}

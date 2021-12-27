@@ -70,6 +70,7 @@ watch(() => props.modelValue, () => {
       :disabled="disabled"
       :icon="icon"
       :auto-insert-space="autoInsertSpace"
+      class="defaultConfirmButton"
     >
       <slot>删除</slot>
     </el-button>
@@ -78,5 +79,7 @@ watch(() => props.modelValue, () => {
 </template>
 
 <style lang="scss" scoped>
-  
+.defaultConfirmButton {
+  margin-left: 0;
+}
 </style>

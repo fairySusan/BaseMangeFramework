@@ -1,9 +1,10 @@
 <script setup lang="ts">
 import {reactive,ref} from 'vue'
-import { useRequest } from '@/mixins/Hooks';
-import {getAllRolesList} from '@/https/setting/roles/Roles'
+import { useOptionRequest, useRequest } from '@/mixins/Hooks'
+import MenuPowerTree from './component/MenuPowerTree.vue'
+import {getAllRolesList, deleteRoles, changeRolesLockedStatus} from '@/https/setting/roles/Roles'
 import {RolesItemI} from '@/https/setting/roles/Type'
-import {BaseTableSearchForm, BaseConfirmButton, BaseModalButton} from '@/componentsui'
+import {BaseTableSearchForm, BaseConfirmPopButton, BaseModalButton} from '@/componentsui'
 import RoleForm from './component/RoleForm.vue'
 
 const queryData = reactive({
@@ -11,10 +12,14 @@ const queryData = reactive({
 })
 const roleFormModalVisible = ref(false)
 const isEdit = ref(false)
-const deleteVisible = ref(false)
+const deletePopVisible = ref(false)
+const powerVisible = ref(false)
 const currRole = ref<RolesItemI | null>(null)
 const roleForm = ref<any>(null)
+
+const {submit: onChangeLock} = useOptionRequest(changeRolesLockedStatus)
 const {data, loading, run:getList} = useRequest<RolesItemI[]>(getAllRolesList,[], queryData)
+const {submit: onDelectRole} = useOptionRequest(deleteRoles)
 
 const onClickEdit = (role: RolesItemI) => {
   currRole.value = role
@@ -22,16 +27,23 @@ const onClickEdit = (role: RolesItemI) => {
   roleFormModalVisible.value = true
 }
 
-const onDelete = (role: RolesItemI) => {
+const onClickMenuPower = (role: RolesItemI) => {
+  powerVisible.value = true
   currRole.value = role
-  deleteVisible.value = true;
+}
+
+const onDelete = async (role: RolesItemI) => {
+  try {
+    await onDelectRole(role.id)
+    getList()
+  }catch(e){}
 }
 
 </script>
 
 <template>
   <div>
-    <BaseTableSearchForm :model="queryData">
+    <BaseTableSearchForm :model="queryData" :is-search-form="false">
       <template #button>
         <el-button type="primary" @click="roleFormModalVisible = true; isEdit=false;">新增</el-button>
       </template>
@@ -60,13 +72,14 @@ const onDelete = (role: RolesItemI) => {
             v-model="row.isLocked"
             active-text="是"
             inactive-text="否"
+            @change="(isLocked: boolean) => onChangeLock({isLocked, id:row.id})"
           ></el-switch>
         </template>
       </el-table-column>
       <el-table-column prop="remark" label="备注"></el-table-column>
       <el-table-column prop="action" label="操作">
         <template #default="{row}">
-          <el-button type="text" class="tableActionBtn">菜单权限</el-button>
+          <el-button type="text" class="tableActionBtn"  @click="onClickMenuPower(row)">菜单权限</el-button>
           <el-button
             type="text"
             class="tableActionBtn"
@@ -74,7 +87,14 @@ const onDelete = (role: RolesItemI) => {
           >
             编辑
           </el-button>
-          <el-button type="text" class="tableActionBtn" @click="onDelete(row)">删除</el-button>
+          <BaseConfirmPopButton
+            v-model="deletePopVisible" 
+            type="text"
+            class="tableActionBtn"
+            @confirm="onDelete(row.id)"
+          >
+            删除
+          </BaseConfirmPopButton>
         </template>
       </el-table-column>
     </el-table>
@@ -96,14 +116,19 @@ const onDelete = (role: RolesItemI) => {
       </template>
     </BaseModalButton>
 
-    <BaseConfirmButton
-      v-model="deleteVisible"
-      :need-button="false"
+    <el-drawer
+      v-model="powerVisible"
+      title="菜单权限"
+      direction="rtl"
     >
-      <template #content>
-        <div style="text-align: center;">再次确认是否删除该角色？</div>
-      </template>
-    </BaseConfirmButton>
+      <el-scrollbar height="89vh">
+        <MenuPowerTree
+          :id="currRole?.id"
+          @refersh="getList"
+          v-model="powerVisible"
+        ></MenuPowerTree>
+      </el-scrollbar>
+    </el-drawer>
   </div>
 </template>
 

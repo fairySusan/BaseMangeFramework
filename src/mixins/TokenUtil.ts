@@ -87,29 +87,5 @@ export class TokenHandler {
         if (moment(time) > moment()) return false;
         return true;
     }
-
-    /**
-     * 倒计时刷新token，如果token过期，自动调用刷新token接口。
-     */
-    // public static isExpireToken(){
-    //     const tokenExpireTime = localStorage.getItem('tokenExpireTime');
-
-    //     if(tokenExpireTime != null){
-    //         const localTime = new Date(tokenExpireTime).getTime();
-    //         const curTime = new Date().getTime();
-
-    //         // token过期倒计时时间，后面3*1000 是提前 3秒 刷新token
-    //         const gapTime = localTime - curTime - 3 * 1000;
-
-    //         let timer:number | null = setTimeout(() => {
-    //             if(timer){
-    //                 clearTimeout(timer);
-    //                 timer = null;
-    //                 TokenHandler.getNewAccessToken(); 
-    //             }
-    //         }, gapTime);
-    //     }
-    // }   
-
 }
 

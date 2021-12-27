@@ -91,6 +91,12 @@ function normalStatusHandle (response: AxiosRequestConfig, resolve: Function, re
       data: response.data,
       message: ''
     })
+  } else {
+    ElMessage({
+      message: response.data.message,
+      grouping: true,
+      type: 'error',
+    })
   }
 }
 

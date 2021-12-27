@@ -11,6 +11,7 @@ const {data, loading, getList,onCurrentChange,onSizeChange} = useTableRequest<Us
   @sizeChange="onSizeChange"
 ></BaseTable>
  */
+import {ref} from 'vue'
 import { BaseTableResponse } from '@/mixins/Interface';
 import { useStore } from '@/store';
 import {PageSizeOptions} from '@/store/modules/common/Type'
@@ -22,19 +23,35 @@ defineProps<{
 
 const emit  = defineEmits<{
   (event: 'currentChange', pageIndex:number): void,
-  (event: 'sizeChange', pageSize: number): void
+  (event: 'sizeChange', pageSize: number): void,
+  (event: 'selectionChange', val: any):void
 }>()
-
+const tableRef = ref<any>(null)
 const store = useStore()
+
+const toggleAllSelection = () => {
+  tableRef.value.toggleAllSelection()
+}
+
+const toggleRowSelection = (row: any, selected: boolean) => {
+  tableRef.value.toggleRowSelection(row, selected)
+}
+
+defineExpose({
+  toggleAllSelection,
+  toggleRowSelection
+})
 </script>
 
 <template>
   <div>
     <el-table 
+      ref="tableRef"
       style="width: 100%"
       :data="data.data"
       v-loading="loading"
       size="medium"
+      @selection-change="(val: any) => emit('selectionChange', val)"
     >
       <slot></slot>
     </el-table>
