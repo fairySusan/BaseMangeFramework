@@ -65,17 +65,18 @@ const submitHandle = () => {
         :model="form" 
         label-width="120px"
         :rules="rules"
+        @keydown.enter="submitHandle" 
       >
         <el-form-item label="登录名" prop="account">
-          <el-input size="medium" v-model="form.account"></el-input>
+          <el-input clearable size="medium" v-model="form.account"></el-input>
         </el-form-item>
         <el-form-item label="密码" prop="password">
-          <el-input size="medium" v-model="form.password" show-password></el-input>
+          <el-input clearable size="medium" v-model="form.password" show-password></el-input>
         </el-form-item>
         <el-form-item label="验证码" prop="verificationCode">
           <el-row>
             <el-col :span="20">
-              <el-input  size="medium" v-model="form.verificationCode"></el-input>
+              <el-input clearable size="medium" v-model="form.verificationCode"></el-input>
             </el-col>
             <el-col :span="4">
               <el-image @click="_GetVertifyCode" class="validateImage" :src="data.imageBase64" fit="fill"></el-image>

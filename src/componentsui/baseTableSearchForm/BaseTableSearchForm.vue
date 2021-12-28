@@ -38,7 +38,7 @@ const isExpendMore = ref(false);
 </script>
 
 <template>
-  <div class="baseTableSearchForm">
+  <div class="baseTableSearchForm" @keydown.enter="emit('search')" >
     <el-form
       :style="isExpendMore?`max-height: 100px;`:`max-height: 43px;`"
       :model="model"
