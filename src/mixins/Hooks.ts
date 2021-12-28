@@ -4,6 +4,9 @@ import { onMounted, Ref, ref } from "vue"
 import { ElMessage  } from 'element-plus'
 import { GetRsaPublicKey } from '@/https/login/Login';
 import JSEncrypt from 'jsencrypt/bin/jsencrypt.min.js';
+import {MessageLoading} from '@/mixins/UITool'
+import ToolUtil from './ToolUtil';
+
 
 // 请求方法类型
 type RequestService<R = any, P extends any[] = any> = (...args: P) => Promise<BaseResponse<R>>;
@@ -106,6 +109,9 @@ export function useFormSubmit<T, P>(submitFun: any, message?: MessageI | false) 
 
   const submit = async (params: P) => {
     loading.value = true
+    const l = MessageLoading({
+      message: '正在提交...',
+    })
     try {
       const res: BaseResponse<T> = await submitFun(params)
       if (showMessage(message, 'success')) {
@@ -124,6 +130,7 @@ export function useFormSubmit<T, P>(submitFun: any, message?: MessageI | false) 
         })
       }
       loading.value = false
+      l.close()
       return Promise.reject(e.message)
     }
   }
@@ -194,6 +201,39 @@ function showMessage (message: MessageI | false | undefined, type: string) {
   }
 
   return true
+}
+
+/* 
+下载的hook
+*@param requestFun 下载文件的请求方法
+*@param params 请求的参数
+*@param fileName 下载的文件名 eg: 日志.xslx
+*/
+export function useDownLoad<P>(requestFun:any, params?: P, fileName?:string) {
+  const loading = ref(false)
+  const run = async () => {
+    loading.value = true
+    const l = MessageLoading({
+      message: '正在下载...',
+    })
+    try {
+      const res: BaseResponse<Blob> = await requestFun(params)
+      ToolUtil.AtagDownLoadHandle(res.data, fileName, )
+      ElMessage({
+        message: '下载成功！',
+        type: 'success',
+      })
+    }catch(e) {
+      console.log(e)
+    }
+    l.close()
+    loading.value = false
+  }
+
+  return {
+    run,
+    loading
+  }
 }
 
 // 加密hook

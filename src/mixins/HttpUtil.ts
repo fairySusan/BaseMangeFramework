@@ -9,7 +9,7 @@ let requestFunctionQueue:Function[] = []; // 当前要排队执行的函数队�
 
 const _axios = axios.create({
   baseURL: mainDomainName,
-  timeout: 3000,
+  timeout: 60* 3000,
   headers: {},
 })
 

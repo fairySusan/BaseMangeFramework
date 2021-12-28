@@ -7,3 +7,5 @@ export {default as BaseModalButton} from './baseModalButton/BaseModalButton.vue'
 export {default as BaseConfirmButton} from './baseConfirmButton/BaseConfirmButton.vue'
 
 export {default as BaseConfirmPopButton} from './baseConfirmPopButton/BaseConfirmPopButton.vue'
+
+export {default as BaseLoadButton} from './baseLoadButton/BaseLoadButton.vue'

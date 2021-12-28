@@ -54,3 +54,9 @@ export const ChangePasswordByUser = (params: ChangeSelfPasswordParamI): Promise<
  export const InitUserData = (): Promise<BaseResponse<UserInitDataResultI>> => {
   return _axios.get('/api/users/initdata')
 }
+
+ //导出服务、订单、值机
+export const ExportOrder = (params:  {PageIndex: number;PageSize: number,ReportType:0,  SortField: 'State,StartDate'
+SortType: 'asc,asc'}): Promise<Blob> => {
+  return _axios.get(`/api/orders/download`, {params, responseType: 'blob'})
+}

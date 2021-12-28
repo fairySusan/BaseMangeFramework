@@ -130,4 +130,28 @@ export default class ToolUtil {
   public static deferCall(fn: (value: void) => void | PromiseLike<void>) {
     return Promise.resolve().then(fn)
   }
+
+  /**
+   * a标签 下载指定后缀名的文件。前提是文件需要数据流形式
+   * @param blobData blob对象内容
+   * @param fileName 文件名
+   * @param suffix 文件后缀名
+   */
+  public static AtagDownLoadHandle(blobData: Blob, fileName?: string) {
+    // 创建下载链接
+    const realName = fileName;
+    // 非ie
+    const downloadHref = window.URL.createObjectURL(blobData);
+    // 创建a标签并为其添加属性
+    const downloadLink = document.createElement('a');
+    downloadLink.href = downloadHref;
+    downloadLink.download = realName || '文件';
+    downloadLink.style.display = 'none';
+    document.body.appendChild(downloadLink)
+    // 触发点击事件执行下载
+    downloadLink.click();
+
+    URL.revokeObjectURL(downloadLink.href) // 释放URL 对象
+    document.body.removeChild(downloadLink)
+  }
 }
