@@ -4,7 +4,7 @@ import { onMounted, Ref, ref } from "vue"
 import { ElMessage  } from 'element-plus'
 import { GetRsaPublicKey } from '@/https/login/Login';
 import JSEncrypt from 'jsencrypt/bin/jsencrypt.min.js';
-import {MessageLoading} from '@/mixins/UITool'
+import {MessageLoading} from '@/mixins/UIUtil'
 import ToolUtil from './ToolUtil';
 
 
