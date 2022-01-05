@@ -110,7 +110,7 @@ export function useFormSubmit<T, P>(submitFun: any, message?: MessageI | false) 
   const submit = async (params: P) => {
     loading.value = true
     const l = MessageLoading({
-      message: '正在提交...',
+      message: message ? (message.loading ? message.loading : '正在提交...') :'正在提交...',
     })
     try {
       const res: BaseResponse<T> = await submitFun(params)
@@ -121,6 +121,7 @@ export function useFormSubmit<T, P>(submitFun: any, message?: MessageI | false) 
         })
       }
       loading.value = false
+      l.close()
       return Promise.resolve(res)
     } catch(e: any) {
       if (showMessage(message, 'error')) {

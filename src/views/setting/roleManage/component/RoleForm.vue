@@ -65,6 +65,7 @@ const onSubmit = () => {
         }
         onClose()
         emit('refresh')
+        emit('update:modelValue', false)
       } catch(e) {}
       loading.value = false
     }
@@ -82,7 +83,6 @@ const resetForm = () => {
 const onClose = () => {
   resetForm()
   emit('update:isEdit', false)
-  emit('update:modelValue', false)
 }
 
 defineExpose({

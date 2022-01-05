@@ -35,23 +35,18 @@ const props = withDefaults(defineProps<{
   type: 'primary'
 })
 
-const slots = useSlots()
-
 const emit = defineEmits<{
   (event: 'update:modelValue', visible: boolean): void,
   (event: 'confirm'): void,
   (event: 'cancel'): void
 }>()
 
-const visible = ref(false)
-
-watch(() => props.modelValue, () => {
-  visible.value = props.modelValue
-})
 
 const onCancel = () => {
-  emit('cancel')
-  emit('update:modelValue', false)
+  if (props.modelValue) {
+    emit('cancel')
+    emit('update:modelValue', false)
+  }
 }
 </script>
 
@@ -72,11 +67,11 @@ const onCancel = () => {
   </el-button>
   <el-dialog
     append-to-body
-    v-model="visible"
+    :model-value="modelValue"
     :title="title"
     :width="width"
     center
-    @close="emit('update:modelValue', false)"
+    @close="onCancel"
   >
     <slot name="content"></slot>
     <template #footer>
