@@ -95,13 +95,4 @@ const onCancel = () => {
 </template>
 
 <style lang="scss" scoped>
-.tableActionBtn::after {
-	content: "|";
-	display: inline-block;
-	margin: 0 5px;
-	vertical-align: text-top;
-}
-.tableActionBtn:last-of-type::after {
-	display: none;
-}
 </style>
