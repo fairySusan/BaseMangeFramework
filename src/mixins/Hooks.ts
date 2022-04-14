@@ -1,7 +1,7 @@
 import { useStore } from '@/store';
 import { BaseTableResponse, BaseResponse,initTableData} from './Interface';
 import { onMounted, Ref, ref } from "vue"
-import { ElMessage  } from 'element-plus'
+import { ElMessage, MessageHandle  } from 'element-plus'
 import { GetRsaPublicKey } from '@/https/login/Login';
 import JSEncrypt from 'jsencrypt/bin/jsencrypt.min.js';
 import {MessageLoading} from '@/mixins/UIUtil'
@@ -104,34 +104,22 @@ interface MessageI {
 }
 
 //T：接口返回数据的类型， P：提交的参数的类型
-export function useFormSubmit<T, P>(submitFun: any, message?: MessageI | false) {
+export function useFormSubmit<T, P>(submitFun: any, message: MessageI | boolean = true) {
   let loading = ref(false)
 
   const submit = async (params: P) => {
     loading.value = true
-    const l = MessageLoading({
-      message: message ? (message.loading ? message.loading : '正在提交...') :'正在提交...',
-    })
+    const l = showMessage(MessageEnum.loading,message);
     try {
       const res: BaseResponse<T> = await submitFun(params)
-      if (showMessage(message, 'success')) {
-        ElMessage({
-          message: message ? (message?.success || '提交成功!') : '提交成功!' ,
-          type: 'success',
-        })
-      }
-      loading.value = false
-      l.close()
+      showMessage(MessageEnum.success,message)
+      loading.value = false;
+      (l as MessageHandle).close()
       return Promise.resolve(res)
     } catch(e: any) {
-      if (showMessage(message, 'error')) {
-        ElMessage({
-          message: message ? (message?.error	 || '提交失败!') : '提交失败!',
-          type: 'error',
-        })
-      }
-      loading.value = false
-      l.close()
+      showMessage(MessageEnum.error, message)
+      loading.value = false;
+      (l as MessageHandle).close()
       return Promise.reject(e.message)
     }
   }
@@ -150,29 +138,22 @@ export function useFormSubmit<T, P>(submitFun: any, message?: MessageI | false) 
 *@param message 操作过程中的提示 操作成功 操作失败的提示 传false不显示提示
 */
 //T：接口返回数据的类型， P：提交的参数的类型
-export function useOptionRequest<T, P>(submitFun: any, message?: MessageI | false) {
+export function useOptionRequest<T, P>(submitFun: any, message: MessageI | boolean = true) {
   let loading = ref(false)
 
   const submit = async (params: P) => {
     loading.value = true
+    const l = showMessage(MessageEnum.loading,message);
     try {
       const res: BaseResponse<T> = await submitFun(params)
-      if (showMessage(message, 'success')) {
-        ElMessage({
-          message: message ? (message?.success || '操作成功!') : '操作成功!' ,
-          type: 'success',
-        })
-      }
-      loading.value = false
+      showMessage(MessageEnum.success, message)
+      loading.value = false;
+      (l as MessageHandle).close()
       return Promise.resolve(res)
     } catch(e: any) {
-      if (showMessage(message, 'error')) {
-        ElMessage({
-          message: message ? (message?.error	 || '操作失败!') : '操作失败!',
-          type: 'error',
-        })
-      }
-      loading.value = false
+      showMessage(MessageEnum.error, message)
+      loading.value = false;
+      (l as MessageHandle).close()
       return Promise.reject(e.message)
     }
   }
@@ -184,25 +165,57 @@ export function useOptionRequest<T, P>(submitFun: any, message?: MessageI | fals
   }
 }
 
-
-function showMessage (message: MessageI | false | undefined, type: string) {
-  if (message === undefined) {
-    return true
-  }
-  if (message === false) {
-    return false
-  }
-
-  if (message[type] === undefined) {
-    return true
-  }
-
-  if (message[type] === false) {
-    return false
-  }
-
-  return true
+const defaultMessage = {
+  success: '提交成功!',
+  error: '提交失败!',
+  loading: '正在提交'
 }
+
+enum MessageEnum {
+  success = 'success',
+  error = 'error',
+  loading = 'loading'
+}
+
+function showMessage(type: MessageEnum,message:MessageI | boolean = true,) {
+  let content: string | boolean = ''
+  if (message === false) return;
+  if (typeof message === 'object') {
+    const m = message[type];
+    content =  m === undefined ? defaultMessage[type] : m;
+  } else if (message === true) {
+    content = defaultMessage[type];
+  }
+
+  if (content === false) return;
+
+  switch(type) {
+    case MessageEnum.loading: 
+      return MessageLoading({
+        message: content,
+      })
+    case MessageEnum.success:
+      ElMessage({
+        message: content,
+        type
+      })
+      break;
+    case MessageEnum.error:
+      ElMessage({
+        message: content,
+        type
+      })
+    default: 
+      ElMessage({
+        message: content,
+        type: 'info'
+      })
+  }
+}
+
+
+
+
 
 /* 
 下载的hook
