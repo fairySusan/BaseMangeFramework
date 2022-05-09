@@ -1,4 +1,3 @@
-
 <script setup lang="ts">
 import SubMenu from './subMenu/SubMenu.vue';
 import { useRequest } from '@/mixins/Hooks';
@@ -9,12 +8,12 @@ import { InitUserData } from '@/https/login/Login';
 import store from '@/store';
 import { onMounted } from 'vue';
 
-const {data: menus} = useRequest<MenuItemI[]>(GetCureentUserMenus,[])
+const {data: menus} = useRequest<MenuItemI[]>(GetCureentUserMenus, [])
 const {data:userInitData, run:getUserInitData} = useRequest<UserInitDataResultI>(InitUserData, null, undefined, false)
 
 onMounted(() => {
   getUserInitData().then(() => {
-    store.commit('user/setUserAuthList',userInitData.value.powers)
+    store.commit('user/setUserAuthList', userInitData.value.powers)
   })
 })
 </script>
