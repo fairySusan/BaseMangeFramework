@@ -1,11 +1,10 @@
-import { BaseResponse } from './Interface';
 import ToolUtil from '@/mixins/ToolUtil';
 import { TokenHandler } from './TokenUtil';
-import axios, { AxiosRequestConfig, AxiosResponse } from 'axios'
+import axios, { AxiosRequestConfig } from 'axios'
 import mainDomainName from '@/config/http.config'
 import { ElMessage } from 'element-plus';
 
-let requestFunctionQueue:Function[] = []; // 当前要排队执行的函数队列列表
+const requestFunctionQueue:any[] = []; // 当前要排队执行的函数队列列表
 
 const _axios = axios.create({
   baseURL: mainDomainName,
@@ -68,7 +67,7 @@ function freshRequestQueue () {
   })
 }
 
-function normalStatusHandle (response: AxiosRequestConfig, resolve: Function, reject: Function) {
+function normalStatusHandle (response: AxiosRequestConfig, resolve: any, reject: any) {
   if (response.data.code === 0) {
     return resolve({
       success: true,
@@ -99,6 +98,5 @@ function normalStatusHandle (response: AxiosRequestConfig, resolve: Function, re
     })
   }
 }
-
 
 export default _axios

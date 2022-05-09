@@ -8,7 +8,6 @@ const store = useStore()
 const userInfo = store.state.user.userInfo
 const router = useRouter()
 
-
 const onClick = (command:string) => {
   if (command === 'loginout') {
     store.commit('user/setUserInfo', null)
@@ -27,7 +26,7 @@ const onClick = (command:string) => {
         <el-avatar :src="userPoto" class="marginRight"></el-avatar>
         <el-dropdown @command="onClick">
           <span class="whiteFontColor">
-            {{userInfo?.name}}({{userInfo?.account}})
+            {{ userInfo?.name }}({{ userInfo?.account }})
             <el-icon class="verticalAlignMid">
               <arrow-down />
             </el-icon>

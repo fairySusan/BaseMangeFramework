@@ -14,7 +14,6 @@ const emit = defineEmits<{
   (event: 'update:modelValue', visible: boolean): void,
 }>()
 
-
 const formData = reactive({
   newPassword: '',
   newPasswordConfirm: ''
@@ -27,7 +26,7 @@ const rules = {
   ],
   newPasswordConfirm: [
     {required: true, message: '请确认新密码'},
-    {validator: (rule:any, value:string, callback:Function) => {
+    {validator: (rule:any, value:string, callback:any) => {
       if (value === formData.newPassword) {
         callback()
       } else {
@@ -53,7 +52,9 @@ const onSubmit = () => {
           id: props.data!.id,
           password: encryptPassword.value
         })
-      } catch(e){}
+      } catch(e){
+        console.log(e)
+      }
     }
   })
 }

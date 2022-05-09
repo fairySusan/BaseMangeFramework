@@ -34,10 +34,10 @@ const onInput = (value: string) => {
           <el-icon size="24px">
             <component :is="iconName"></component>
           </el-icon>
-          <span class="fontSizeMini">{{iconName}}</span>
+          <span class="fontSizeMini">{{ iconName }}</span>
         </div>
       </div>
-     </el-scrollbar>
+    </el-scrollbar>
   </div>
 </template>
 

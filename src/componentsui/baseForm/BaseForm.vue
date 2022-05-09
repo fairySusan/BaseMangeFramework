@@ -71,7 +71,7 @@ defineProps<{
         :size="item.size"
         :item="item.name"
       >
-        {{radio.label}}
+        {{ radio.label }}
       </el-radio>
     </el-form-item>
   </el-form>

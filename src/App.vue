@@ -9,11 +9,11 @@ onMounted(() => {
 </script>
 
 <template>
-<router-view v-slot="{ Component }">
-  <transition name="el-fade-in-linear">
-    <component :is="Component" />
-  </transition>
-</router-view>
+  <router-view v-slot="{ Component }">
+    <transition name="el-fade-in-linear">
+      <component :is="Component" />
+    </transition>
+  </router-view>
 </template>
 
 <style lang="scss" src="./App.scss"></style>

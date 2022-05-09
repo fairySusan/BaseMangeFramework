@@ -107,8 +107,9 @@ const submitHandle = () => {
             @click="submitHandle"
             :loading="btnLoading"
             style="width: 100%"
-            >登录</el-button
           >
+            登录
+          </el-button>
         </el-form-item>
       </el-form>
     </div>

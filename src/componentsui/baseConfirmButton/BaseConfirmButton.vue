@@ -49,44 +49,44 @@ watch(() => props.modelValue, () => {
 </script>
 
 <template>
-<el-button
-  v-if="needButton"
-  @click="emit('update:modelValue', true)"
-  :type="type"
-  :plain="plain"
-  :round="round"
-  :circle="circle"
-  :loading="loading"
-  :disabled="disabled"
-  :icon="icon"
-  :auto-insert-space="autoInsertSpace"
->
-  <slot>删除</slot>
-</el-button>
-<el-dialog
-  append-to-body
-  v-model="visible"
-  :title="title"
-  :width="width"
-  center
-  @close="emit('update:modelValue', false)"
->
-  <template #title>
-    <slot name="title">
-      <div class="flexCenter">
-        <el-icon>
-          <component :is="titleIcon"></component>
-        </el-icon>
-        <div class="titleText">{{title}}</div>
-      </div>
-    </slot>
-  </template>
-  <slot name="content"></slot>
-  <template #footer>
-    <el-button @click="emit('update:modelValue', false)">取消</el-button>
-    <el-button type="danger" @click="emit('confirm')">确认</el-button>
-  </template>
-</el-dialog>
+  <el-button
+    v-if="needButton"
+    @click="emit('update:modelValue', true)"
+    :type="type"
+    :plain="plain"
+    :round="round"
+    :circle="circle"
+    :loading="loading"
+    :disabled="disabled"
+    :icon="icon"
+    :auto-insert-space="autoInsertSpace"
+  >
+    <slot>删除</slot>
+  </el-button>
+  <el-dialog
+    append-to-body
+    v-model="visible"
+    :title="title"
+    :width="width"
+    center
+    @close="emit('update:modelValue', false)"
+  >
+    <template #title>
+      <slot name="title">
+        <div class="flexCenter">
+          <el-icon>
+            <component :is="titleIcon"></component>
+          </el-icon>
+          <div class="titleText">{{ title }}</div>
+        </div>
+      </slot>
+    </template>
+    <slot name="content"></slot>
+    <template #footer>
+      <el-button @click="emit('update:modelValue', false)">取消</el-button>
+      <el-button type="danger" @click="emit('confirm')">确认</el-button>
+    </template>
+  </el-dialog>
 </template>
 
 <style lang="scss" scoped>

@@ -82,7 +82,7 @@ export class TokenHandler {
      * @returns 
      */
     public static isExpire(): boolean {
-        let time = localStorage.getItem(TokenHandler.tokenExpireKey);
+        const time = localStorage.getItem(TokenHandler.tokenExpireKey);
         if (time == null) return true;
         if (moment(time) > moment()) return false;
         return true;

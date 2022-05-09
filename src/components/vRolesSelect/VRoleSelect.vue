@@ -16,7 +16,7 @@ const emit = defineEmits<{
 }>()
 
 const selectRoleIds = ref<number[]>([])
-const {data, loading} = useRequest<RolesItemI[]>(getAllRolesList, [])
+const {data} = useRequest<RolesItemI[]>(getAllRolesList, [])
 
 const onChange = (ids: number[]) => {
   selectRoleIds.value = ids;

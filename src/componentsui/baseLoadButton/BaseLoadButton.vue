@@ -1,6 +1,6 @@
 <script setup lang="ts">
-import {ref, watch} from 'vue'
-const props = withDefaults(defineProps<{
+import {ref} from 'vue'
+withDefaults(defineProps<{
   type?: string;
   success: boolean;
   percent: number
@@ -20,21 +20,21 @@ const onClose = () => {
 </script>
 
 <template>
-<el-button
-  :type="type"
-  @click="visible = true;emit('confirm')"
->
-下载
-</el-button>
-<teleport to="body">
-  <div v-if="visible" class="modelBack flexRowCenter">
-    <el-icon @click="onClose" class="closeIcon" size="30" color="#ffffff"><close-bold /></el-icon>
-    <div class="pregress">
-      <span class="whiteFontColor">{{success ? '下载完成' : '正在下载'}}</span>
-      <el-progress :percentage="percent" :status="success ? 'success' : ''"></el-progress>
+  <el-button
+    :type="type"
+    @click="visible = true;emit('confirm')"
+  >
+    下载
+  </el-button>
+  <teleport to="body">
+    <div v-if="visible" class="modelBack flexRowCenter">
+      <el-icon @click="onClose" class="closeIcon" size="30" color="#ffffff"><close-bold /></el-icon>
+      <div class="pregress">
+        <span class="whiteFontColor">{{ success ? '下载完成' : '正在下载' }}</span>
+        <el-progress :percentage="percent" :status="success ? 'success' : ''"></el-progress>
+      </div>
     </div>
-  </div>
-</teleport>
+  </teleport>
 </template>
 
 <style lang="scss">

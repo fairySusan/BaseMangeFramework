@@ -28,14 +28,14 @@ const onClickEdit = (item: MenuItemI) => {
   menuModalVisible.value = true
 }
 
-const allowDrop = (draggingNode: any, dropNode: any, type: any) => {
+const allowDrop = () => {
   return true
 }
 
-const allowDrag = (draggingNode: any) => {
+const allowDrag = () => {
   return true
 }
-const handleDragEnd = async (draggingNode: any, dropNode: any, dropType: any, ev:any) => {
+const handleDragEnd = async (draggingNode: any, dropNode: any, dropType: any) => {
   const dragMenu = draggingNode.data
   if (dropType === 'before') {
     dragMenu.parentId = dropNode.data.parentId
@@ -55,14 +55,18 @@ const onDelete = async (id: number) => {
   try {
     await deleteSubmit({id})
     getList()
-  } catch(e){}
+  } catch(e){
+    console.log(e)
+  }
 }
 </script>
 
 <template>
   <el-container direction="vertical">
     <div class="baseTableSearchForm">
-      <el-button style="width:100px" type="primary" @click="menuModalVisible = true; isEdit=false">新增菜单</el-button>
+      <el-button style="width:100px" type="primary" @click="menuModalVisible = true; isEdit=false">
+        新增菜单
+      </el-button>
     </div>
     <el-container class="menuMainContainer" direction="horizontal">
       <el-aside v-loading="loading">
@@ -85,7 +89,7 @@ const onDelete = async (id: number) => {
               <el-icon size="16px">
                 <component :is="node.data.icon"></component>
               </el-icon>
-              {{node.data.name}}
+              {{ node.data.name }}
             </span>
           </template>
         </el-tree>
@@ -94,7 +98,7 @@ const onDelete = async (id: number) => {
         <el-table
           :data="currTable"
           size="medium"
-         style="flex: 1; height:100%"
+          style="flex: 1; height:100%"
         >
           <el-table-column prop="name" label="名称"></el-table-column>
           <el-table-column prop="icon" label="图标">
@@ -107,7 +111,9 @@ const onDelete = async (id: number) => {
           <el-table-column prop="url" label="路径"></el-table-column>
           <el-table-column prop="action" label="操作">
             <template #default="{row}">
-              <el-button type="text" class="tableActionBtn" @click="onClickEdit(row)">编辑</el-button>
+              <el-button type="text" class="tableActionBtn" @click="onClickEdit(row)">
+                编辑
+              </el-button>
               <BaseConfirmPopButton
                 v-model="deletePopVisible"
                 type="text"
@@ -142,7 +148,6 @@ const onDelete = async (id: number) => {
 .tableActionBtn {
   @include tableActionBtn
 }
-
 .baseTableSearchForm {
   background-color: white;
   padding: 10px;

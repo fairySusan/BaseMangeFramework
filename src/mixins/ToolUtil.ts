@@ -2,7 +2,7 @@ import store from '@/store';
 
 export default class ToolUtil {
   /**判断是否为空对象 */
-  public static isEmptyObject(obj: Object) {
+  public static isEmptyObject(obj: any) {
     return Object.keys(obj).length === 0
   }
 
@@ -27,13 +27,13 @@ export default class ToolUtil {
    * 判断密码是否有连续的三个字符
    */
   public static isKeyBoardContinuousChar(str: any) {
-    let c1 = [
+    const c1 = [
       ['!', '@', '#', '$', '%', '^', '&', '*', '(', ')', '_', '+'],
       ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '{', '}', '|'],
-      ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ':', '\"'],
+      ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ':', '"'],
       ['z', 'x', 'c', 'v', 'b', 'n', 'm', '<', '>', '?']
     ];
-    let c2 = [
+    const c2 = [
       ['1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '-', '='],
       ['q', 'w', 'e', 'r', 't', 'y', 'u', 'i', 'o', 'p', '[', ']', '\\'],
       ['a', 's', 'd', 'f', 'g', 'h', 'j', 'k', 'l', ';', '\''],
@@ -41,8 +41,8 @@ export default class ToolUtil {
     ];
     str = str.split("");
     //获取坐标位置
-    let y = [];
-    let x = [];
+    const y = [];
+    const x = [];
     for (let c = 0; c < str.length; c++) {
       y[c] = 0;//当做~`键处理
       x[c] = -1;
@@ -107,7 +107,7 @@ export default class ToolUtil {
     return time.getTime() > Date.now()
   }
 
-  public static validatePassword(rule:any, value:string, callback:Function){
+  public static validatePassword(rule:any, value:string, callback:(msg?: any) => void){
     const pwdRank = ToolUtil.calcPwdRank(value)
     if(value === ''){
         callback(new Error('未填写密码'));

@@ -66,7 +66,9 @@ const onSubmit = () => {
         onClose()
         emit('refresh')
         emit('update:modelValue', false)
-      } catch(e) {}
+      } catch(e) {
+        console.log(e)
+      }
       loading.value = false
     }
   })
@@ -92,62 +94,22 @@ defineExpose({
 </script>
 
 <template>
-  <!-- <el-dialog
-    append-to-body
-    center
-    v-model="isVisible"
-    width="30vw"
-    :title="isEdit?'编辑': '新增'"
-    > -->
-    <el-form v-loading="loading" ref="roleForm" :model="formData" :rules="RoleRules" label-width="80px">
-      <el-form-item prop="name" label="角色名">
-        <el-input v-model="formData.name" placeholder="请输入角色名称"></el-input>
-      </el-form-item>
-      <el-form-item required prop="isDefault" label="默认">
-        <el-radio v-model="formData.isDefault" :label="true">是</el-radio>
-        <el-radio v-model="formData.isDefault" :label="false">否</el-radio>
-      </el-form-item>
-      <el-form-item required prop="isLocked" label="锁定">
-        <el-radio v-model="formData.isLocked" :label="true">是</el-radio>
-        <el-radio v-model="formData.isLocked" :label="false">否</el-radio>
-      </el-form-item>
-      <el-form-item prop="remark" label="备注">
-        <el-input v-model="formData.remark" placeholder="备注"></el-input>
-      </el-form-item>
-    </el-form>
-    <!-- <div class="flexRowCenter footer">
-      <el-button
-        style="width: 100px;"
-        :auto-insert-space="true"
-        @click="onClose"
-      >
-        取消
-      </el-button>
-      <el-button
-        style="width: 100px;"
-        type="primary"
-        :auto-insert-space="true"
-      >
-        提交
-      </el-button>
-    </div> -->
-    <!-- <template #footer>
-      <el-button
-        style="width: 100px;"
-        :auto-insert-space="true"
-        @click="onClose"
-      >
-        取消
-      </el-button>
-      <el-button
-        style="width: 100px;"
-        type="primary"
-        :auto-insert-space="true"
-      >
-        提交
-      </el-button>
-    </template>
-  </el-dialog> -->
+  <el-form v-loading="loading" ref="roleForm" :model="formData" :rules="RoleRules" label-width="80px">
+    <el-form-item prop="name" label="角色名">
+      <el-input v-model="formData.name" placeholder="请输入角色名称"></el-input>
+    </el-form-item>
+    <el-form-item required prop="isDefault" label="默认">
+      <el-radio v-model="formData.isDefault" :label="true">是</el-radio>
+      <el-radio v-model="formData.isDefault" :label="false">否</el-radio>
+    </el-form-item>
+    <el-form-item required prop="isLocked" label="锁定">
+      <el-radio v-model="formData.isLocked" :label="true">是</el-radio>
+      <el-radio v-model="formData.isLocked" :label="false">否</el-radio>
+    </el-form-item>
+    <el-form-item prop="remark" label="备注">
+      <el-input v-model="formData.remark" placeholder="备注"></el-input>
+    </el-form-item>
+  </el-form>
 </template>
 
 <style lang="scss" scoped>

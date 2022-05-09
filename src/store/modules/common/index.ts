@@ -6,10 +6,9 @@ const state: CommonStateI = {
   defaultPageSize: 10,
 }
 
-
 const mutations:MutationTree<CommonStateI> = {
   setPageSize: (state: CommonStateI) => {
-    for (let item of mediaHeightAdpter) {
+    for (const item of mediaHeightAdpter) {
       if (item.device.matches) {
         state.defaultPageSize = item.pageSize
         break

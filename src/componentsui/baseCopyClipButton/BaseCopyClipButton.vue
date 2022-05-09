@@ -33,12 +33,12 @@ const onCopy = () => {
 </script>
 
 <template>
-<el-button
-  :type="type"
-  @click="onCopy"
->
-  {{slots.default ? slots.default() : '复制'}}
-</el-button>
+  <el-button
+    :type="type"
+    @click="onCopy"
+  >
+    {{ slots.default ? slots.default() : '复制' }}
+  </el-button>
 </template>
 
 <style lang="scss">

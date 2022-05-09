@@ -15,5 +15,3 @@ export async function useEncrypt(password: string) {
     encryptPassword,
   };
 }
-
-export function useLogin(params: LoginParamsI) { }

@@ -2,7 +2,6 @@ import { BasePowerItemI } from '@/https/setting/power/Type';
 import store from '@/store';
 import { App } from 'vue'
 
-
 export default {
   install: (app: App) => {
     /**

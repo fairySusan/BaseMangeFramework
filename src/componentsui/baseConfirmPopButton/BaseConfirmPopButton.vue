@@ -50,32 +50,32 @@ watch(() => props.modelValue, () => {
 </script>
 
 <template>
-<el-popconfirm
-  :confirm-button-text="confirmButtonText"
-  :cancel-button-text="cancelButtonText"
-  :icon="titleIcon"
-  :icon-color="titleIconColor"
-  :title="title"
-  @confirm="emit('confirm')"
-  @cancel="emit('cancel')"
->
-  <template #reference>
-    <el-button
-      @click="emit('update:modelValue', true)"
-      :type="type"
-      :plain="plain"
-      :round="round"
-      :circle="circle"
-      :loading="loading"
-      :disabled="disabled"
-      :icon="icon"
-      :auto-insert-space="autoInsertSpace"
-      class="defaultConfirmButton"
-    >
-      <slot>删除</slot>
-    </el-button>
-  </template>
-</el-popconfirm>
+  <el-popconfirm
+    :confirm-button-text="confirmButtonText"
+    :cancel-button-text="cancelButtonText"
+    :icon="titleIcon"
+    :icon-color="titleIconColor"
+    :title="title"
+    @confirm="emit('confirm')"
+    @cancel="emit('cancel')"
+  >
+    <template #reference>
+      <el-button
+        @click="emit('update:modelValue', true)"
+        :type="type"
+        :plain="plain"
+        :round="round"
+        :circle="circle"
+        :loading="loading"
+        :disabled="disabled"
+        :icon="icon"
+        :auto-insert-space="autoInsertSpace"
+        class="defaultConfirmButton"
+      >
+        <slot>删除</slot>
+      </el-button>
+    </template>
+  </el-popconfirm>
 </template>
 
 <style lang="scss" scoped>

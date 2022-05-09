@@ -47,7 +47,6 @@ const routes: Array<RouteRecordRaw> = [
   }
 ]
 
-
 const router = createRouter({
   history: createWebHashHistory(),
   routes
@@ -58,7 +57,7 @@ export const exteranl = [
 ]
 
 // 全局路由拦截器
-router.beforeEach((to: RouteLocationNormalized, from: RouteLocationNormalized) => {
+router.beforeEach((to: RouteLocationNormalized) => {
   const curToken = TokenHandler.getToken();
   if (exteranl.includes(to.path)) {
     return true

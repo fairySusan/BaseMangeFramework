@@ -36,7 +36,9 @@ const onDelete = async (role: RolesItemI) => {
   try {
     await onDelectRole(role.id)
     getList()
-  }catch(e){}
+  }catch(e){
+    console.log(e)
+  }
 }
 
 </script>

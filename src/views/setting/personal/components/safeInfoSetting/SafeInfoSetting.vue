@@ -15,7 +15,7 @@ const rules = {
   ],
   newPasswordConfirm: [
     {required: true, message: '请确认新密码'},
-    {validator: (rule:any, value:string, callback:Function) => {
+    {validator: (rule:any, value:string, callback:any) => {
       if (value === formData.newPassword) {
         callback()
       } else {
@@ -32,8 +32,7 @@ const formData = reactive({
 })
 const safeForm = ref<any>(null)
 
-const {submit: submitFun, loading: btnLoading} = useFormSubmit<string, ChangeSelfPasswordParamI>(ChangePasswordByUser) 
-
+const {submit: submitFun} = useFormSubmit<string, ChangeSelfPasswordParamI>(ChangePasswordByUser) 
 
 const submit = () => {
   safeForm.value!.validate(async (valid:boolean) => {
@@ -46,7 +45,9 @@ const submit = () => {
           newPassword: result[0].encryptPassword.value,
           newPasswordConfirm: result[1].encryptPassword.value
         })
-      } catch(e){}
+      } catch(e){
+        console.log(e)
+      }
     }
   })
 }
@@ -55,7 +56,7 @@ const submit = () => {
 <template>
   <el-container direction="vertical">
     <div class="settingTitle marginTopBottom fontSizeM">安全设置</div>
-    <el-form ref="safeForm" :model="formData" label-position="left"  label-width="120px" :rules="rules">
+    <el-form ref="safeForm" :model="formData" label-position="left" label-width="120px" :rules="rules">
       <el-form-item label="旧密码" prop="oldPassword">
         <el-input v-model="formData.oldPassword" show-password></el-input>
       </el-form-item>

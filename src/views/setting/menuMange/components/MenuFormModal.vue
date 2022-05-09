@@ -3,7 +3,7 @@ import { useFormSubmit } from '@/mixins/Hooks'
 import {ref, reactive, watch} from 'vue'
 import {MenuFormI, menuFormRules} from '../Type'
 import {addNewMenu, changeMenuItem} from "@/https/setting/menu/Menu"
-import {AddMenuParamI, ChangeMenuParamI,MenuItemI} from  "@/https/setting/menu/Type"
+import {AddMenuParamI, ChangeMenuParamI, MenuItemI} from  "@/https/setting/menu/Type"
 import {BaseModalButton} from "@/componentsui"
 import {VELIconForm} from '@/components'
 
@@ -61,7 +61,9 @@ const onSubmit = async () => {
     }
     emit('update:modelValue', false)
     emit('refresh')
-  }catch(e) {}
+  }catch(e) {
+    console.log(e)
+  }
 }
 
 const resetForm = () => {
@@ -103,7 +105,7 @@ const onSelectIcon = (iconName: string) => {
           title="选择图标"
           type="text"
         >
-          {{formData.icon ? '重新选择' :'选择'}}
+          {{ formData.icon ? '重新选择' : '选择' }}
           <template #content>
             <VELIconForm @select="onSelectIcon"></VELIconForm>
           </template>

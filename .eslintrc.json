@@ -1,0 +1,40 @@
+{
+  "env": {
+    "browser": true,
+    "es2021": true,
+    "vue/setup-compiler-macros": true
+  },
+  "parser": "vue-eslint-parser",
+  "extends": [
+    "eslint:recommended",
+    "plugin:vue/vue3-recommended",
+    "plugin:@typescript-eslint/recommended"
+  ],
+  "parserOptions": {
+    "ecmaVersion": "latest",
+    "parser": "@typescript-eslint/parser",
+    "sourceType": "module"
+  },
+  "plugins": ["vue", "@typescript-eslint"],
+  "rules": {
+    "vue/multi-word-component-names": ["off"],
+    "@typescript-eslint/no-non-null-assertion": ["off"],
+    "vue/max-attributes-per-line": ["error",  {"singleline": {"max": 5}}],
+    "vue/html-self-closing": ["off"],
+    "vue/attributes-order": ["off"],
+    "vue/valid-v-for": ["off"],
+    "vue/singleline-html-element-content-newline": ["off"],
+    "vue/multiline-html-element-content-newline": ["error"],
+    "vue/html-closing-bracket-newline": ["error"],
+    "vue/html-indent": ["error"],
+    "vue/v-on-event-hyphenation": ["off"],
+    "@typescript-eslint/no-unused-vars": ["error"],
+    "vue/mustache-interpolation-spacing": ["error"],
+    "no-multiple-empty-lines":["error", {"max": 1}],
+    "vue/require-v-for-key": ["off"],
+    "no-cond-assign":["off"],
+    "@typescript-eslint/no-inferrable-types":["off"],
+    "vue/no-mutating-props": ["off"],
+    "vue/attribute-hyphenation": ["off"]
+	}
+}

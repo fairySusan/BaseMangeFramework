@@ -89,7 +89,9 @@ const onSubmit = async () => {
     })
     emit('refersh')
     emit('update:modelValue', false)
-  } catch(e) {}
+  } catch(e) {
+    console.log(e)
+  }
   loading.value = false
 }
 </script>

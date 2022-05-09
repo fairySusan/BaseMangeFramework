@@ -5,7 +5,6 @@ import {RootState} from './Type'
 import { InjectionKey } from 'vue'
 import createPersistedState from 'vuex-persistedstate';
 
-
 export const key: InjectionKey<Store<RootState>> = Symbol();
 
 export default createStore<RootState>({

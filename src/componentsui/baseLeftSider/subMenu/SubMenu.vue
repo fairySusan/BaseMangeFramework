@@ -1,7 +1,6 @@
 <script setup lang="ts">
 import { MenuItemI } from '@/https/setting/menu/Type'
 
-
 defineProps<{
   menuItem: MenuItemI
 }>()
@@ -13,7 +12,7 @@ defineProps<{
       <el-icon>
         <component :is="menuItem.icon"></component>
       </el-icon>
-      {{menuItem.name}}
+      {{ menuItem.name }}
     </template>
     <template v-for="menu in menuItem.children" :key="menu.name">
       <SubMenu v-if="menu.children.length>0" :menuItem="menu"></SubMenu>
@@ -21,7 +20,7 @@ defineProps<{
         <el-icon>
           <component :is="menu.icon"></component>
         </el-icon>
-        {{menu.name}}
+        {{ menu.name }}
       </el-menu-item>
     </template>
   </el-sub-menu>

@@ -12,7 +12,6 @@
 #default: 自定义按钮
 #content: 自定义弹窗的内容
 */
-import {ref, useSlots, watch} from 'vue'
 const props = withDefaults(defineProps<{
   modelValue: boolean,
   // 弹窗的属性，参照element plus的dialog组件属性
@@ -40,7 +39,6 @@ const emit = defineEmits<{
   (event: 'confirm'): void,
   (event: 'cancel'): void
 }>()
-
 
 const onCancel = () => {
   if (props.modelValue) {

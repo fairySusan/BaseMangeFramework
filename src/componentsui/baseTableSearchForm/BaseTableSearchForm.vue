@@ -13,7 +13,7 @@
 #more: 可收起展开的查询条件
 #button：额外的按钮
 */
-import { ref, useSlots } from "vue";
+import { ref } from "vue";
 
 withDefaults(
   defineProps<{
@@ -50,7 +50,7 @@ const isExpendMore = ref(false);
     <div class="options">
       <template v-if="isSearchForm">
         <el-button v-if="isExpand" type="text" @click="isExpendMore = !isExpendMore">
-          {{isExpendMore ? "收起↑" : "展开更多筛选↓"}}
+          {{ isExpendMore ? "收起↑" : "展开更多筛选↓" }}
         </el-button>
         <el-button type="primary" @click="emit('search')">查询</el-button>
         <el-button @click="emit('reset')">重置</el-button>

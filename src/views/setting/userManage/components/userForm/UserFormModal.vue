@@ -84,7 +84,9 @@ const onSubmit = () => {
         }
         onClose()
         emit('refresh')
-      } catch(e) {}
+      } catch(e) {
+        console.log(e)
+      }
       loading.value = false
     }
   })
@@ -101,7 +103,14 @@ const onSubmit = () => {
     center
     @close="emit('update:modelValue', false)"
   >
-    <el-form ref="userform" v-loading="loading" :model="formData" label-width="80px" inline :rules="userFormRules">
+    <el-form
+      ref="userform"
+      v-loading="loading"
+      :model="formData"
+      label-width="80px"
+      inline
+      :rules="userFormRules"
+    >
       <el-form-item prop="account" label="账号">
         <el-input :disabled="isEdit" placeholder="请输入账号" v-model="formData.account"></el-input>
       </el-form-item>

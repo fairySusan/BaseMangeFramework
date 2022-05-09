@@ -7,14 +7,13 @@ import JSEncrypt from 'jsencrypt/bin/jsencrypt.min.js';
 import {MessageLoading} from '@/mixins/UIUtil'
 import ToolUtil from './ToolUtil';
 
-
 // 请求方法类型
 type RequestService<R = any, P extends any[] = any> = (...args: P) => Promise<BaseResponse<R>>;
 
 // http请求的钩子， 用于onMounted里需要的请求
 export function useRequest<T = any>(requestFun: RequestService<T>, initData: any, params?: any, immediate = true) {
   const data: Ref<T> = ref(initData)
-  let loading = ref(false)
+  const loading = ref(false)
 
   const run = async () => {
     loading.value = true
@@ -27,7 +26,6 @@ export function useRequest<T = any>(requestFun: RequestService<T>, initData: any
       loading.value = false
     }
   }
-
 
   onMounted(() => {
     immediate && run()
@@ -49,8 +47,8 @@ type RequestTableService<R = any, P extends any[] = any> = (...args: P) => Promi
 export function useTableRequest<T = any>(requestFun: RequestTableService<T>, params?: any, ) {
   const store = useStore()
   const data: Ref<BaseTableResponse<T>> = ref(initTableData)
-  let loading = ref(false)
-  let pageSize = ref(0)
+  const loading = ref(false)
+  const pageSize = ref(0)
 
   const getList = async () => {
     loading.value = true
@@ -65,7 +63,6 @@ export function useTableRequest<T = any>(requestFun: RequestTableService<T>, par
     }
   }
 
-  
   const onCurrentChange = (pageIndex: number) => {
     params.PageIndex = pageIndex
     getList()
@@ -105,7 +102,7 @@ interface MessageI {
 
 //T：接口返回数据的类型， P：提交的参数的类型
 export function useFormSubmit<T, P>(submitFun: any, message: MessageI | boolean = true) {
-  let loading = ref(false)
+  const loading = ref(false)
 
   const submit = async (params: P) => {
     loading.value = true
@@ -124,7 +121,6 @@ export function useFormSubmit<T, P>(submitFun: any, message: MessageI | boolean 
     }
   }
  
-
   return {
     loading,
     submit
@@ -139,7 +135,7 @@ export function useFormSubmit<T, P>(submitFun: any, message: MessageI | boolean 
 */
 //T：接口返回数据的类型， P：提交的参数的类型
 export function useOptionRequest<T, P>(submitFun: any, message: MessageI | boolean = true) {
-  let loading = ref(false)
+  const loading = ref(false)
 
   const submit = async (params: P) => {
     loading.value = true
@@ -158,7 +154,6 @@ export function useOptionRequest<T, P>(submitFun: any, message: MessageI | boole
     }
   }
  
-
   return {
     loading,
     submit
@@ -205,6 +200,7 @@ function showMessage(type: MessageEnum,message:MessageI | boolean = true,) {
         message: content,
         type
       })
+      break;
     default: 
       ElMessage({
         message: content,
@@ -212,10 +208,6 @@ function showMessage(type: MessageEnum,message:MessageI | boolean = true,) {
       })
   }
 }
-
-
-
-
 
 /* 
 下载的hook

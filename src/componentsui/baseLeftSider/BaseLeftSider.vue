@@ -30,7 +30,7 @@ onMounted(() => {
             <el-icon>
               <component :is="menu.icon"></component>
             </el-icon>
-            {{menu.name}}
+            {{ menu.name }}
           </el-menu-item>
         </template>
       </el-menu>

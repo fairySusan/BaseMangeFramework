@@ -9,7 +9,6 @@ const state: UserStateI = {
   authList: []
 }
 
-
 const mutations:MutationTree<UserStateI> = {
   setUserInfo: (state: UserStateI, data:UserI) => {
     state.userInfo = data;
